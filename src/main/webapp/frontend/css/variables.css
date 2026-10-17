@@ -1,0 +1,210 @@
+/* ==========================================================================
+   FoodRush Design System Tokens — Red & Black Gradient Theme
+   High-Contrast, Ultra-Premium Electric Red to Obsidian Palette
+   ========================================================================== */
+
+:root {
+  /* FoodRush Vibrant Red & Ruby Palette */
+  --color-primary: #E50914;
+  /* Electric Crimson Red */
+  --color-primary-dark: #B8000B;
+  /* Deep Ruby Blood Crimson */
+  --color-primary-light: #FF2E4D;
+  /* Luminous Electric Red */
+  --color-primary-soft: #FFF0F2;
+  /* Soft Ruby Mist */
+  --color-primary-tint: #FFCCD3;
+  /* Radiant Rose Tint */
+  --color-accent: #FF334B;
+  /* Neon Ruby Accent */
+  --color-accent-dark: #990012;
+  /* Deep Crimson Garnet */
+  --color-accent-soft: #FFE4E8;
+  /* Warm Rose Mist */
+
+  /* Neutrals & Surfaces (Light Mode) */
+  --color-bg: #FBF8F8;
+  /* Clean Alabaster with soft ruby undertone */
+  --color-surface: #FFFFFF;
+  /* Pure White */
+  --color-surface-soft: #F5EFEF;
+  /* Soft Neutral Surface */
+  --color-surface-hover: #FFEBEF;
+  /* Soft Red Glow Hover */
+  --color-border: #E8DFE0;
+  /* Crisp Subtle Border */
+  --color-border-light: #F3ECEC;
+  /* Light Crisp Border */
+  --color-border-focus: #E50914;
+  /* Electric Red Focus */
+
+  /* Typography Colors (High Contrast) */
+  --color-text-primary: #120E10;
+  /* Deep Obsidian Black (15:1 Contrast) */
+  --color-text-secondary: #4A3E40;
+  /* Charcoal Stone Gray (7.5:1 Contrast) */
+  --color-text-muted: #7A6E70;
+  /* Muted Slate Gray (4.8:1 Contrast) */
+  --color-text-inverse: #FFFFFF;
+  /* Pure White */
+
+  /* Semantic Colors */
+  --color-success: #16A34A;
+  /* Fresh Emerald Green */
+  --color-success-soft: #DCFCE7;
+  /* Pale Fresh Green */
+  --color-warning: #EAB308;
+  /* Amber Gold */
+  --color-warning-soft: #FEF9C3;
+  /* Pale Amber */
+  --color-error: #E50914;
+  /* High-Impact Red */
+  --color-error-soft: #FFE4E8;
+  /* Soft Red Highlight */
+  --color-info: #E50914;
+  --color-info-soft: #FFF0F2;
+
+  /* Veg / Non-Veg Indicator Colors */
+  --color-veg: #16A34A;
+  --color-veg-bg: #DCFCE7;
+  --color-nonveg: #E50914;
+  --color-nonveg-bg: #FFE4E8;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #FF1E42 0%, #E50914 45%, #990012 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #FF3D5E 0%, #FF1E42 45%, #B8000B 100%);
+  --gradient-red-black: linear-gradient(135deg, #E50914 0%, #3B0007 48%, #0A0A0A 100%);
+  --gradient-black-red: linear-gradient(135deg, #0A0A0A 0%, #200407 50%, #E50914 100%);
+  --gradient-hero-dark: linear-gradient(135deg, #180306 0%, #0D0506 50%, #080808 100%);
+  --gradient-ruby: linear-gradient(135deg, #FF2E4D 0%, #B8000B 100%);
+  --gradient-warm-card: linear-gradient(145deg, #FFFFFF 0%, #FFF5F6 100%);
+
+  /* Typography Scale */
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-size-display: 44px;
+  --font-size-h1: 36px;
+  --font-size-h2: 28px;
+  --font-size-h3: 22px;
+  --font-size-h4: 18px;
+  --font-size-body-lg: 17px;
+  --font-size-body: 15px;
+  --font-size-body-sm: 13px;
+  --font-size-caption: 12px;
+
+  --line-height-display: 1.2;
+  --line-height-heading: 1.25;
+  --line-height-body: 1.5;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 2px 8px rgba(18, 14, 16, 0.06);
+  --shadow-md: 0 8px 24px rgba(18, 14, 16, 0.09);
+  --shadow-lg: 0 16px 40px rgba(18, 14, 16, 0.14);
+  --shadow-card: 0 4px 16px rgba(18, 14, 16, 0.06);
+  --shadow-card-hover: 0 14px 32px rgba(229, 9, 20, 0.22), 0 4px 12px rgba(18, 14, 16, 0.08);
+  --shadow-primary-btn: 0 8px 24px -4px rgba(229, 9, 20, 0.5), 0 2px 6px rgba(229, 9, 20, 0.3);
+  --shadow-accent: 0 8px 20px rgba(229, 9, 20, 0.35);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout Containers */
+  --container-max-width: 1240px;
+  --navbar-height: 76px;
+  --z-sticky: 100;
+  --z-drawer: 200;
+  --z-modal-backdrop: 300;
+  --z-modal: 310;
+  --z-toast: 400;
+
+  /* Theme-specific tokens */
+  --color-navbar-bg: rgba(255, 255, 255, 0.94);
+  --color-overlay-bg: rgba(255, 240, 242, 0.94);
+  --color-badge-bg: #FFFFFF;
+}
+
+/* ==========================================================================
+   FoodRush Dark Mode Theme Tokens — Ultra-Sleek Red & Black Obsidian Palette
+   ========================================================================== */
+[data-theme="dark"] {
+  /* Neutrals & Surfaces */
+  --color-bg: #0A0708;
+  /* Ultra-Deep Black Obsidian with subtle ruby undertone */
+  --color-surface: #140F10;
+  /* Deep Charcoal Surface */
+  --color-surface-soft: #1E1618;
+  /* Elevated Dark Component */
+  --color-surface-hover: #2C1D20;
+  /* Red-Tinted Dark Hover */
+  --color-border: #352225;
+  /* Soft Ruby Dark Border */
+  --color-border-light: #231719;
+  /* Subtle Dark Border */
+  --color-border-focus: #FF1E42;
+  /* Electric Red Focus */
+
+  /* Typography Colors (Ultra High Contrast) */
+  --color-text-primary: #FFFFFF;
+  /* 100% Pure White (19:1 Contrast) */
+  --color-text-secondary: #D4C5C7;
+  /* Soft Rose Silver Gray (11:1 Contrast) */
+  --color-text-muted: #9E8C8E;
+  /* Muted Slate Gray (5.5:1 Contrast) */
+  --color-text-inverse: #0A0708;
+
+  /* Soft & Tint Colors */
+  --color-primary-soft: rgba(229, 9, 20, 0.18);
+  --color-primary-tint: rgba(255, 30, 66, 0.32);
+  --color-accent-soft: rgba(255, 51, 75, 0.18);
+
+  /* Semantic Soft Highlights */
+  --color-success-soft: rgba(22, 163, 74, 0.2);
+  --color-warning-soft: rgba(234, 179, 8, 0.2);
+  --color-error-soft: rgba(229, 9, 20, 0.25);
+  --color-info-soft: rgba(229, 9, 20, 0.22);
+  --color-veg-bg: rgba(22, 163, 74, 0.2);
+  --color-nonveg-bg: rgba(229, 9, 20, 0.25);
+
+  /* Gradients */
+  --gradient-warm-card: linear-gradient(145deg, #181314 0%, #0E0B0C 100%);
+
+  /* Shadows for Dark Mode */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.85);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 0 14px 32px rgba(229, 9, 20, 0.3), 0 4px 12px rgba(0, 0, 0, 0.7);
+
+  /* Theme-specific tokens */
+  --color-navbar-bg: rgba(16, 11, 12, 0.94);
+  --color-overlay-bg: rgba(10, 7, 8, 0.96);
+  --color-badge-bg: #1E1618;
+}

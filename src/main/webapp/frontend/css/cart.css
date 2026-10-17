@@ -1,0 +1,493 @@
+/* ==========================================================================
+   FoodRush Cart Page Styles
+   Strict adherence to Section 16 (Page 4 — CART) of Design Spec
+   ========================================================================== */
+
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: var(--space-8);
+  align-items: start;
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 960px) {
+  .cart-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   1. Cart Left: Restaurant & Items List
+   -------------------------------------------------------------------------- */
+.cart-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-6);
+}
+
+.cart-restaurant-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+  margin-bottom: var(--space-5);
+}
+
+.cart-restaurant-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.cart-restaurant-title {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.cart-restaurant-loc {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
+
+/* Cart Item Rows */
+.cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.cart-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px dashed var(--color-border-light);
+}
+
+.cart-item-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.cart-item-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+}
+
+.cart-item-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cart-item-name {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.cart-item-unit-price {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
+
+.cart-item-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.cart-item-total {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  min-width: 60px;
+  text-align: right;
+}
+
+.btn-remove-item {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 16px;
+  transition: color var(--transition-fast);
+}
+
+.btn-remove-item:hover {
+  color: var(--color-error);
+}
+
+/* Add More Items CTA */
+.add-more-items-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-primary);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-semibold);
+  margin-top: var(--space-4);
+}
+
+.add-more-items-link:hover {
+  text-decoration: underline;
+}
+
+/* Cooking / Delivery Instructions */
+.cart-instructions-box {
+  margin-top: var(--space-4);
+}
+
+.instruction-input {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+.instruction-input:focus {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface);
+}
+
+/* --------------------------------------------------------------------------
+   2. Upsell / Add-on Carousel
+   -------------------------------------------------------------------------- */
+.addon-title {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-3);
+  color: var(--color-text-primary);
+}
+
+.addon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+@media (max-width: 640px) {
+  .addon-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.addon-card {
+  background-color: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.addon-info-name {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.addon-info-price {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   3. Cart Right: Sticky Summary & Coupons
+   -------------------------------------------------------------------------- */
+.cart-summary-sidebar {
+  position: sticky;
+  top: calc(var(--navbar-height) + 16px);
+}
+
+/* Coupon Box */
+.coupon-box {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.coupon-title {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.coupon-input-group {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.coupon-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: var(--font-size-body-sm);
+  text-transform: uppercase;
+  outline: none;
+}
+
+.coupon-input:focus {
+  border-color: var(--color-primary);
+}
+
+.applied-coupon-pill {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-success-soft);
+  border: 1px solid var(--color-success);
+  color: var(--color-success);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  margin-top: 10px;
+}
+
+.applied-coupon-pill.active {
+  display: flex;
+}
+
+/* Bill Details Card */
+.bill-summary-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.bill-title {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.bill-row.discount {
+  color: var(--color-success);
+  font-weight: var(--font-weight-semibold);
+}
+
+.bill-divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-4) 0;
+}
+
+.bill-row-grand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-black);
+  color: var(--color-text-primary);
+}
+
+.bill-row-grand .total-val {
+  color: var(--color-primary);
+}
+
+.cancellation-note {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: var(--space-4) 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Empty Cart State
+   -------------------------------------------------------------------------- */
+.cart-empty-view {
+  display: none;
+  text-align: center;
+  padding: var(--space-20) var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  max-width: 600px;
+  margin: var(--space-8) auto;
+}
+
+.cart-empty-view.visible {
+  display: block;
+}
+
+.cart-empty-icon {
+  font-size: 64px;
+  margin-bottom: var(--space-4);
+}
+
+.cart-empty-title {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-2);
+}
+
+.cart-empty-desc {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   5. Free Delivery Incentive Bar & Delivery Quick Tags
+   -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   5. Free Delivery Incentive Bar & Delivery Quick Tags
+   -------------------------------------------------------------------------- */
+.free-delivery-card {
+  background: linear-gradient(135deg, #FFF0F2 0%, #FFE5E9 100%);
+  border: 1px solid rgba(255, 46, 77, 0.3);
+  border-radius: var(--radius-xl);
+  padding: 14px 18px;
+  margin-bottom: var(--space-5);
+  box-shadow: 0 4px 16px rgba(229, 9, 20, 0.08);
+}
+
+[data-theme="dark"] .free-delivery-card {
+  background: linear-gradient(135deg, rgba(229, 9, 20, 0.16) 0%, rgba(184, 0, 11, 0.10) 100%);
+  border: 1px solid rgba(255, 46, 77, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.free-delivery-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.free-delivery-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(229, 9, 20, 0.35);
+}
+
+.free-delivery-title {
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-primary);
+}
+
+.free-delivery-title strong {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-extrabold);
+}
+
+.free-delivery-sub {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 1px;
+}
+
+.free-delivery-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.free-delivery-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, #FF4D6D, #E50914);
+  transition: width 0.6s ease;
+}
+
+.delivery-tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.instruction-tag-pill {
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.instruction-tag-pill input[type="checkbox"] {
+  display: none;
+}
+
+.instruction-tag-pill .tag-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-soft);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.instruction-tag-pill input[type="checkbox"]:checked+.tag-content {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.18);
+}
+
+.instruction-tag-pill:hover .tag-content {
+  border-color: var(--color-primary);
+}

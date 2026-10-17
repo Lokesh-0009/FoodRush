@@ -1,0 +1,417 @@
+/* ==========================================================================
+   FoodRush Home Page Styles — Red & Black Gradient Theme
+   High-Contrast, Ultra-Premium Electric Red to Obsidian Palette
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Hero Section
+   -------------------------------------------------------------------------- */
+.hero-section {
+  position: relative;
+  background: linear-gradient(135deg, #FFF0F2 0%, #FFE6EA 50%, #FFF5F7 100%);
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 240, 242, 0.96) 0%,
+    rgba(255, 240, 242, 0.85) 45%,
+    rgba(255, 240, 242, 0.25) 80%,
+    transparent 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-container {
+  width: 100%;
+  position: relative;
+  z-index: 3;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 580px;
+  z-index: 3;
+}
+
+.hero-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-primary-tint);
+  color: var(--color-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hero-headline {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-black);
+  line-height: 1.15;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.03em;
+}
+
+.hero-headline .highlight {
+  color: var(--color-primary);
+  position: relative;
+  display: inline-block;
+}
+
+.hero-headline .highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-color: rgba(229, 9, 20, 0.22);
+  z-index: -1;
+  border-radius: var(--radius-xs);
+}
+
+.hero-subtitle {
+  font-size: var(--font-size-body-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-8);
+  max-width: 520px;
+}
+
+/* Big Hero Search & Action Form */
+.hero-search-box {
+  width: 100%;
+  max-width: 540px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 8px 8px 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--space-4);
+}
+
+.hero-location-select {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  border-right: 1px solid var(--color-border);
+  padding-right: var(--space-3);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.hero-location-select:hover {
+  color: var(--color-primary);
+}
+
+.hero-input-field {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+.hero-input-field::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Quick Cuisine Suggestion Pills */
+.hero-quick-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hero-tag-label {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.hero-tag-pill {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.hero-tag-pill:hover {
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+/* Dark Mode Hero Overrides */
+[data-theme="dark"] .hero-section {
+  background: linear-gradient(135deg, #150507 0%, #0A0708 60%, #050304 100%);
+}
+
+[data-theme="dark"] .hero-video-overlay {
+  background: linear-gradient(
+    90deg,
+    rgba(10, 7, 8, 0.97) 0%,
+    rgba(18, 10, 12, 0.88) 45%,
+    rgba(10, 7, 8, 0.35) 80%,
+    transparent 100%
+  );
+}
+
+@media (max-width: 980px) {
+  .hero-section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    min-height: 480px;
+  }
+
+  .hero-bg-video {
+    object-position: 70% center;
+  }
+
+  .hero-content {
+    max-width: 500px;
+  }
+
+  .hero-headline {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-10);
+    min-height: auto;
+  }
+
+  .hero-video-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 240, 242, 0.96) 0%,
+      rgba(255, 240, 242, 0.88) 60%,
+      rgba(255, 240, 242, 0.95) 100%
+    );
+  }
+
+  [data-theme="dark"] .hero-video-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 7, 8, 0.97) 0%,
+      rgba(18, 10, 12, 0.90) 60%,
+      rgba(10, 7, 8, 0.97) 100%
+    );
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-headline {
+    font-size: 28px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Cuisine Categories Section
+   -------------------------------------------------------------------------- */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+}
+
+@media (max-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 580px) {
+  .categories-grid {
+    grid-template-columns: repeat(4, 1fr);
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+  }
+
+  .category-avatar {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Deals & Promotional Banner — Red & Black Gradient Luxury
+   -------------------------------------------------------------------------- */
+.promo-banner {
+  background:
+    radial-gradient(circle at 10% 20%, rgba(229, 9, 20, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(184, 0, 11, 0.28) 0%, transparent 50%),
+    linear-gradient(145deg, #240407 0%, #150204 50%, #0A0708 100%);
+  border: 1px solid rgba(255, 46, 77, 0.35);
+  border-top: 1px solid rgba(255, 140, 160, 0.45);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 30px rgba(229, 9, 20, 0.25);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-10);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.promo-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(229, 9, 20, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.promo-badge-tag {
+  background: var(--gradient-primary);
+  color: #FFFFFF;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  margin-bottom: var(--space-2);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
+}
+
+.promo-title {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-black);
+  margin-bottom: var(--space-2);
+  color: #FFFFFF;
+}
+
+.promo-desc {
+  font-size: var(--font-size-body);
+  color: #E5E5E5;
+  max-width: 480px;
+}
+
+@media (max-width: 768px) {
+  .promo-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-6);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Value Props / Why FoodRush
+   -------------------------------------------------------------------------- */
+.value-props-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.value-prop-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform var(--transition-fast);
+}
+
+.value-prop-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-primary-tint);
+}
+
+.value-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: var(--space-4);
+}
+
+.value-card-title {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-2);
+}
+
+.value-card-desc {
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .value-props-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}

@@ -1,0 +1,767 @@
+/* ==========================================================================
+   FoodRush Order Tracking & Confirmation Styles — Red & Black Gradient Theme
+   High-Contrast, Ultra-Premium Electric Red to Obsidian Palette
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Confirmation Top Banner — Red & Black Gradient Luxury
+   -------------------------------------------------------------------------- */
+.tracking-hero-banner {
+  background: linear-gradient(135deg, #1C0307 0%, #150508 50%, #0A0708 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 46, 77, 0.35);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 30px rgba(229, 9, 20, 0.25);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  margin-bottom: var(--space-8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.tracking-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(229, 9, 20, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.order-success-title {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-black);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   Dynamic Auto-Confirmation Tick Animation
+   Hardware-accelerated SVG stroke drawing with spring bounce, radiant aura & micro-sparks
+   -------------------------------------------------------------------------- */
+.dynamic-confirmation-tick {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  animation: tickEntrancePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dynamic-confirmation-tick .tick-animated-svg {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: block;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.45) 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.55);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.45), inset 0 0 10px rgba(16, 185, 129, 0.3);
+  overflow: visible;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dynamic-confirmation-tick:hover .tick-animated-svg {
+  transform: scale(1.08);
+}
+
+.dynamic-confirmation-tick .tick-circle {
+  stroke: #10B981;
+  stroke-width: 3.5;
+  stroke-miterlimit: 10;
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  animation: tickStrokeCircle 0.75s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.dynamic-confirmation-tick .tick-check {
+  stroke: #FFFFFF;
+  stroke-width: 4.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 10;
+  stroke-dasharray: 45;
+  stroke-dashoffset: 45;
+  animation: tickStrokeCheck 0.45s 0.42s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+/* Glowing Radiant Ripple Aura */
+.dynamic-confirmation-tick .tick-ripple-aura {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: rgba(16, 185, 129, 0.35);
+  animation: tickPulseAura 2.2s 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+/* Micro Celebration Sparkles */
+.dynamic-confirmation-tick .tick-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  animation: tickSparkBurst 0.9s 0.55s ease-out forwards;
+}
+
+.dynamic-confirmation-tick .tick-spark.spark-1 {
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+}
+
+.dynamic-confirmation-tick .tick-spark.spark-2 {
+  background: #F59E0B;
+  box-shadow: 0 0 8px #F59E0B;
+}
+
+.dynamic-confirmation-tick .tick-spark.spark-3 {
+  background: #FF2E4D;
+  box-shadow: 0 0 8px #FF2E4D;
+}
+
+.dynamic-confirmation-tick .tick-spark.spark-4 {
+  background: #38BDF8;
+  box-shadow: 0 0 8px #38BDF8;
+}
+
+/* Keyframe Animations */
+@keyframes tickEntrancePop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes tickStrokeCircle {
+  0% {
+    stroke-dashoffset: 150;
+    opacity: 0.2;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes tickStrokeCheck {
+  0% {
+    stroke-dashoffset: 45;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes tickPulseAura {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+@keyframes tickSparkBurst {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .dynamic-confirmation-tick {
+    width: 36px;
+    height: 36px;
+  }
+  .dynamic-confirmation-tick .tick-animated-svg,
+  .dynamic-confirmation-tick .tick-ripple-aura {
+    width: 36px;
+    height: 36px;
+  }
+  .order-success-title {
+    font-size: 1.35rem;
+    gap: 8px;
+  }
+}
+
+.order-eta-display {
+  font-size: var(--font-size-body-lg);
+  color: var(--color-primary-light);
+  font-weight: var(--font-weight-bold);
+}
+
+/* --------------------------------------------------------------------------
+   2. Two-Column Layout
+   -------------------------------------------------------------------------- */
+.tracking-grid-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .tracking-grid-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Vertical Timeline Stepper
+   -------------------------------------------------------------------------- */
+.timeline-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-6);
+}
+
+.timeline-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  position: relative;
+  padding-left: var(--space-8);
+  margin: var(--space-4) 0;
+}
+
+.timeline-stepper::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  background-color: var(--color-border);
+}
+
+.timeline-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.timeline-step-node {
+  position: absolute;
+  left: calc(-1 * var(--space-8) + 3px);
+  top: 2px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--color-text-muted);
+  z-index: 2;
+  transition: all var(--transition-fast);
+}
+
+.timeline-step.completed .timeline-step-node {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: #FFFFFF;
+}
+
+.timeline-step.active .timeline-step-node {
+  background: var(--gradient-primary);
+  border-color: var(--color-primary);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 4px var(--color-primary-soft);
+  animation: pulseNode 2s infinite;
+}
+
+@keyframes pulseNode {
+  0% {
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.5);
+  }
+
+  70% {
+    box-shadow: 0 0 0 8px rgba(229, 9, 20, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0);
+  }
+}
+
+.timeline-step-title {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.timeline-step-desc {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+
+.timeline-step-time {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* Status Simulation Pill Bar */
+.status-demo-bar {
+  background-color: var(--color-surface-soft);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-top: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   4. Delivery Partner & Live Route Milestones Track
+   -------------------------------------------------------------------------- */
+.rider-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+}
+
+.rider-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rider-avatar-wrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.rider-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid var(--color-primary);
+}
+
+.rider-online-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  background: #22C55E;
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+}
+
+.rider-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rider-name {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+}
+
+.rider-badge-verified {
+  background: #ECFDF5;
+  color: #059669;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #A7F3D0;
+}
+
+.rider-meta {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 3px;
+  font-weight: var(--font-weight-medium);
+}
+
+.rider-safety-tag {
+  font-size: 11px;
+  color: #15803D;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.rider-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rider-btn-call {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.rider-btn-call:hover {
+  background: var(--color-primary);
+  color: #FFFFFF;
+}
+
+/* Route Milestones & Interactive Live GPS Navigation Map */
+.map-track-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.map-track-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.map-track-title {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-primary);
+}
+
+.live-pulse-dot {
+  width: 10px;
+  height: 10px;
+  background: #22C55E;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  animation: pulseGreen 1.5s infinite;
+}
+
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+.route-eta-pill {
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.map-container-wrapper {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface-soft);
+}
+
+#live-delivery-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Live Map HUD (Heads-Up Display) */
+.map-hud-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 400;
+  background: rgba(18, 4, 7, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 46, 77, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hud-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #D4C5C7;
+}
+
+.hud-value {
+  font-weight: 700;
+  color: var(--color-primary-light);
+}
+
+.map-recenter-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 400;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.map-recenter-btn:hover {
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+/* Custom Leaflet Map Markers */
+.custom-map-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.restaurant-pin {
+  background: var(--color-primary);
+  border: 2.5px solid #FFFFFF;
+  color: #FFFFFF;
+}
+
+.customer-pin {
+  background: #10B981;
+  border: 2.5px solid #FFFFFF;
+  color: #FFFFFF;
+}
+
+.scooter-pin-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scooter-pin {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #180306, #0A0708);
+  border: 2.5px solid #FF1E42;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 4px 16px rgba(229, 9, 20, 0.55);
+  animation: scooterPulse 2s infinite;
+}
+
+@keyframes scooterPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.65);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(229, 9, 20, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0);
+  }
+}
+
+.rider-nametag {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #180306;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.map-footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-light);
+  gap: 12px;
+}
+
+.map-endpoint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.endpoint-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.endpoint-name {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.endpoint-sub {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.endpoint-arrow {
+  color: var(--color-primary);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* --------------------------------------------------------------------------
+   5. Order Receipt Sidebar
+   -------------------------------------------------------------------------- */
+.receipt-sidebar {
+  position: sticky;
+  top: calc(var(--navbar-height) + 16px);
+}
+
+.receipt-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.receipt-header {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+  margin-bottom: var(--space-4);
+}
+
+.receipt-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: var(--font-size-body-sm);
+}

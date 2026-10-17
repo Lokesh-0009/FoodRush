@@ -1,0 +1,871 @@
+/* ==========================================================================
+   FoodRush Modern Customer Profile Styles
+   State-of-the-Art Account Center & Identity Hub
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Profile Page Wrapper & Breadcrumbs
+   -------------------------------------------------------------------------- */
+.profile-page-main {
+  padding-bottom: 60px;
+  background-color: var(--color-bg-base);
+  min-height: calc(100vh - 80px);
+}
+
+.profile-breadcrumb-bar {
+  padding: 16px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+.profile-breadcrumb-bar a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.profile-breadcrumb-bar a:hover {
+  color: var(--color-primary);
+}
+.profile-breadcrumb-current {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   2. Modern Hero Showcase HUD Banner
+   -------------------------------------------------------------------------- */
+.profile-hero-hud {
+  position: relative;
+  background: linear-gradient(135deg, #18181B 0%, #27272A 50%, #1F1F23 100%);
+  border-radius: var(--radius-2xl, 24px);
+  padding: 36px 36px 28px;
+  margin-bottom: 32px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+/* Ambient glow orb behind hero */
+.profile-hero-hud::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(229, 9, 20, 0.35) 0%, rgba(245, 158, 11, 0.15) 50%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.profile-hero-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.profile-user-summary {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Interactive Avatar & Photo Overlay */
+.profile-avatar-holder {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+  background: #27272A;
+  overflow: hidden;
+}
+.profile-avatar-holder:hover {
+  transform: scale(1.04);
+  border-color: var(--color-primary, #E50914);
+}
+
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #E50914 0%, #B91C1C 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.avatar-camera-btn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.2s ease;
+}
+.profile-avatar-holder:hover .avatar-camera-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.profile-hero-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-hero-name {
+  font-size: 26px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.profile-hero-contact {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.profile-hero-contact span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* User Badges */
+.badge-role-gold {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35));
+  color: #FCD34D;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+}
+.badge-role-driver {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.badge-role-admin {
+  background: rgba(239, 68, 68, 0.2);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Top Hero Actions */
+.profile-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-hero-order {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+.btn-hero-order:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+  color: #FFFFFF;
+}
+
+/* 4 Quick KPI Stat Tiles */
+.profile-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+.profile-kpi-pill {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 16px);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.profile-kpi-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+.kpi-pill-icon {
+  font-size: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+}
+.kpi-pill-details {
+  display: flex;
+  flex-direction: column;
+}
+.kpi-pill-val {
+  font-size: 17px;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+.kpi-pill-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* --------------------------------------------------------------------------
+   3. Main Profile 2-Column Grid Layout
+   -------------------------------------------------------------------------- */
+.profile-main-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .profile-main-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Left Sidebar Navigation Card */
+.profile-sidebar-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl, 20px);
+  padding: 12px;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 96px;
+}
+.profile-nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-tab-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: var(--radius-md, 12px);
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.profile-tab-btn-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.profile-tab-btn-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.profile-tab-button:hover {
+  background: var(--color-surface-hover, rgba(0, 0, 0, 0.04));
+  color: var(--color-text-primary);
+  transform: translateX(3px);
+}
+
+.profile-tab-button.active {
+  background: var(--color-primary-soft, rgba(229, 9, 20, 0.1));
+  color: var(--color-primary, #E50914);
+  font-weight: 700;
+}
+.profile-tab-button.active .profile-tab-btn-icon {
+  transform: scale(1.1);
+}
+
+.profile-nav-divider {
+  height: 1px;
+  background: var(--color-border-subtle);
+  margin: 8px 12px;
+}
+
+.profile-tab-button.logout {
+  color: var(--color-error, #EF4444);
+}
+.profile-tab-button.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #DC2626;
+}
+
+/* --------------------------------------------------------------------------
+   4. Right Content Card & Tab Panels
+   -------------------------------------------------------------------------- */
+.profile-content-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl, 20px);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  min-height: 480px;
+}
+
+@media (max-width: 640px) {
+  .profile-content-box {
+    padding: 20px;
+  }
+}
+
+.tab-pane {
+  display: none;
+  animation: tabFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.tab-pane.active {
+  display: block;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-heading-block {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.tab-main-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+}
+.tab-sub-title {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Form Inputs with Icon Wrappers
+   -------------------------------------------------------------------------- */
+.profile-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 600px;
+}
+
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.input-field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.field-locked-tag {
+  font-size: 11px;
+  color: var(--color-text-tertiary, #9CA3AF);
+  font-weight: 500;
+}
+
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-leading-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 16px;
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+}
+.profile-text-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 16px 0 42px;
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md, 12px);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.profile-text-input:focus {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.15);
+}
+.profile-text-input:read-only {
+  opacity: 0.75;
+  cursor: not-allowed;
+  background: var(--color-surface-soft, rgba(0, 0, 0, 0.03));
+}
+
+.input-trailing-action {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-field-hint {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* Submit Action Button */
+.btn-save-profile {
+  height: 46px;
+  padding: 0 28px;
+  background: var(--color-primary, #E50914);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-md, 12px);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(229, 9, 20, 0.35);
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  align-self: flex-start;
+}
+.btn-save-profile:hover {
+  background: #B91C1C;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(229, 9, 20, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   6. Tab 2: Profile Photo Manager UI
+   -------------------------------------------------------------------------- */
+.photo-manager-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 640px;
+}
+
+.photo-preview-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl, 20px);
+}
+.photo-big-preview {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background: #27272A;
+  flex-shrink: 0;
+}
+.photo-preview-text h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--color-text-primary);
+}
+.photo-preview-text p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 0 0 14px;
+  line-height: 1.4;
+}
+
+.photo-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn-upload-photo {
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border-radius: var(--radius-md, 10px);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  transition: all 0.2s ease;
+}
+.btn-upload-photo:hover {
+  background: #B91C1C;
+}
+.btn-remove-photo {
+  padding: 8px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-error);
+  border-radius: var(--radius-md, 10px);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.btn-remove-photo:hover {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* Avatar Presets Grid */
+.avatar-presets-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.presets-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.avatar-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 12px;
+}
+.avatar-preset-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border-subtle);
+  background: var(--color-bg-base);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: all 0.2s ease;
+}
+.avatar-preset-btn:hover {
+  border-color: var(--color-primary);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   7. Tab 3: Saved Addresses
+   -------------------------------------------------------------------------- */
+.addresses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.address-card-item {
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-base);
+  border-radius: var(--radius-lg, 16px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+.address-card-item:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.address-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.address-type-tag {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.badge-default-address {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.address-text-body {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+.address-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--color-border-subtle);
+}
+.btn-addr-action {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.btn-addr-action:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   8. Tab 4: Security & Password Strength Meter
+   -------------------------------------------------------------------------- */
+.security-status-card {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-lg, 16px);
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.sec-card-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.sec-card-text h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #065F46;
+  margin: 0 0 2px;
+}
+[data-theme="dark"] .sec-card-text h4 {
+  color: #34D399;
+}
+.sec-card-text p {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Password Strength Bar */
+.password-meter-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+.password-meter-bar {
+  height: 4px;
+  background: var(--color-border-subtle);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+.password-meter-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: 999px;
+}
+.fill-weak { width: 33%; background-color: #EF4444; }
+.fill-medium { width: 66%; background-color: #F59E0B; }
+.fill-strong { width: 100%; background-color: #10B981; }
+
+.password-meter-label {
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   9. Tab 5: Preferences Toggle Switches
+   -------------------------------------------------------------------------- */
+.prefs-rows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 600px;
+}
+.pref-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  gap: 20px;
+}
+.pref-item-row:last-child {
+  border-bottom: none;
+}
+.pref-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+.pref-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* Modern iOS-Style Toggle Switch */
+.switch-control {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.switch-control input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--color-border-subtle);
+  transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 999px;
+}
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #FFFFFF;
+  transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.switch-control input:checked + .switch-slider {
+  background-color: var(--color-primary, #E50914);
+}
+.switch-control input:checked + .switch-slider:before {
+  transform: translateX(22px);
+}

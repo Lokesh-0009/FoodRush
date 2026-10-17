@@ -1,0 +1,138 @@
+/* ==========================================================================
+   FoodRush Order History Styles
+   Strict adherence to Section 16 (Page 8 — ORDER HISTORY) of Design Spec
+   ========================================================================== */
+
+.orders-page-header {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* Status Filter Tabs */
+.orders-filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  overflow-x: auto;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-2);
+}
+
+.order-tab-btn {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.order-tab-btn:hover {
+  background-color: var(--color-surface-soft);
+  color: var(--color-text-primary);
+}
+
+.order-tab-btn.active {
+  background: var(--gradient-primary);
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.35);
+}
+
+/* Orders List */
+.orders-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 860px;
+}
+
+.order-history-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.order-history-card:hover {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-md);
+}
+
+.order-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+  margin-bottom: var(--space-4);
+}
+
+.order-restaurant-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.order-restaurant-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.order-restaurant-name {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.order-meta-info {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
+
+/* Order Items Summary */
+.order-items-snippet {
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+
+.order-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-light);
+  flex-wrap: wrap;
+}
+
+.order-total-price {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-black);
+  color: var(--color-text-primary);
+}
+
+.order-actions-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}

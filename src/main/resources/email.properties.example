@@ -1,0 +1,18 @@
+# =============================================================================
+# FoodRush Email Service Configuration (Template)
+# =============================================================================
+# Copy this file as 'email.properties' in the same folder and fill in:
+# 1. Your Gmail address in mail.user
+# 2. Your 16-character Google App Password in mail.password (without spaces)
+#    (Generate via: Google Account -> Security -> 2-Step Verification -> App Passwords)
+# =============================================================================
+
+mail.smtp.host=smtp.gmail.com
+mail.smtp.port=587
+mail.smtp.auth=true
+mail.smtp.starttls.enable=true
+mail.from.name=FoodRush Security
+
+# Replace with your actual credentials:
+mail.user=your_email@gmail.com
+mail.password=your_16_char_app_password
