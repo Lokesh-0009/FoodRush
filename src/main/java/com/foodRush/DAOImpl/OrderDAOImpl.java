@@ -12,38 +12,32 @@ import java.util.List;
 import com.foodRush.DAO.OrderDAO;
 import com.foodRush.model.Orders;
 import com.foodRush.util.DBConnection;
+import com.foodRush.model.OrderItem;
 
 public class OrderDAOImpl implements OrderDAO {
 
-	private static final String INSERT_QUERY =
-			"INSERT INTO orders(UserID, RestaurantID, OrderDate, TotalAmount, "
+	private static final String INSERT_QUERY = "INSERT INTO orders(UserID, RestaurantID, OrderDate, TotalAmount, "
 			+ "Status, PaymentMethod, Payment_Status) "
 			+ "VALUES(?,?,?,?,?,?,?)";
 
-	private static final String SELECT_QUERY =
-			"SELECT * FROM orders WHERE OrderID = ?";
+	private static final String SELECT_QUERY = "SELECT * FROM orders WHERE OrderID = ?";
 
-	private static final String UPDATE_QUERY =
-			"UPDATE orders SET Status=?, PaymentMethod=?, Payment_Status=? "
+	private static final String UPDATE_QUERY = "UPDATE orders SET Status=?, PaymentMethod=?, Payment_Status=? "
 			+ "WHERE OrderID=?";
 
-	private static final String DELETE_QUERY =
-			"DELETE FROM orders WHERE OrderID = ?";
+	private static final String DELETE_QUERY = "DELETE FROM orders WHERE OrderID = ?";
 
-	private static final String SELECTALL_QUERY =
-			"SELECT * FROM orders";
+	private static final String SELECTALL_QUERY = "SELECT * FROM orders";
 
-	private static final String SELECT_BY_USER_QUERY =
-			"SELECT * FROM orders WHERE UserID = ? ORDER BY OrderDate DESC";
+	private static final String SELECT_BY_USER_QUERY = "SELECT * FROM orders WHERE UserID = ? ORDER BY OrderDate DESC";
 
-	private static final String SELECT_BY_RESTAURANT_QUERY =
-			"SELECT * FROM orders WHERE RestaurantID = ? ORDER BY OrderDate DESC";
+	private static final String SELECT_BY_RESTAURANT_QUERY = "SELECT * FROM orders WHERE RestaurantID = ? ORDER BY OrderDate DESC";
 
 	@Override
 	public int addOrder(Orders order) {
 		int generatedId = 0;
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement pstmt = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
 			pstmt.setInt(1, order.getUserID());
 			pstmt.setInt(2, order.getRestaurantID());
@@ -74,7 +68,7 @@ public class OrderDAOImpl implements OrderDAO {
 		Orders order = null;
 
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(SELECT_QUERY)) {
+				PreparedStatement pstmt = connection.prepareStatement(SELECT_QUERY)) {
 
 			pstmt.setInt(1, orderID);
 
@@ -91,10 +85,11 @@ public class OrderDAOImpl implements OrderDAO {
 
 	@Override
 	public void updateOrder(Orders order) {
-		if (order == null) return;
+		if (order == null)
+			return;
 		String sql = "UPDATE orders SET Status=?, PaymentMethod=?, Payment_Status=?, driverID=? WHERE OrderID=?";
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
 			pstmt.setString(1, normalizeStatus(order.getStatus()));
 			pstmt.setString(2, normalizePaymentMethod(order.getPaymentMethod()));
@@ -110,17 +105,21 @@ public class OrderDAOImpl implements OrderDAO {
 			System.out.println(i + " row effected");
 
 			// If delivered, free up driver
-			if ("DELIVERED".equalsIgnoreCase(normalizeStatus(order.getStatus())) && order.getDriverID() != null && order.getDriverID() > 0) {
-				try (PreparedStatement dStmt = connection.prepareStatement("UPDATE driver SET status = 'AVAILABLE' WHERE driverID = ?")) {
+			if ("DELIVERED".equalsIgnoreCase(normalizeStatus(order.getStatus())) && order.getDriverID() != null
+					&& order.getDriverID() > 0) {
+				try (PreparedStatement dStmt = connection
+						.prepareStatement("UPDATE driver SET status = 'AVAILABLE' WHERE driverID = ?")) {
 					dStmt.setInt(1, order.getDriverID());
 					dStmt.executeUpdate();
-				} catch (SQLException ignore) {}
+				} catch (SQLException ignore) {
+				}
 			}
 
 		} catch (SQLException e) {
 			// Fallback in case driverID column is missing in legacy schema
 			try (Connection connection = DBConnection.getConnection();
-				 PreparedStatement pstmt = connection.prepareStatement("UPDATE orders SET Status=?, PaymentMethod=?, Payment_Status=? WHERE OrderID=?")) {
+					PreparedStatement pstmt = connection.prepareStatement(
+							"UPDATE orders SET Status=?, PaymentMethod=?, Payment_Status=? WHERE OrderID=?")) {
 				pstmt.setString(1, normalizeStatus(order.getStatus()));
 				pstmt.setString(2, normalizePaymentMethod(order.getPaymentMethod()));
 				pstmt.setString(3, normalizePaymentStatus(order.getPaymentStatus()));
@@ -137,7 +136,8 @@ public class OrderDAOImpl implements OrderDAO {
 			return "PLACED";
 		}
 		String s = status.trim().toUpperCase().replace(" ", "_").replace("-", "_");
-		if (s.equals("OUT_FOR_DELIVERY") || s.equals("OUTFORDELIVERY") || s.equals("ON_ROUTE") || s.equals("DISPATCHED")) {
+		if (s.equals("OUT_FOR_DELIVERY") || s.equals("OUTFORDELIVERY") || s.equals("ON_ROUTE")
+				|| s.equals("DISPATCHED")) {
 			return "OUT_FOR_DELIVERY";
 		} else if (s.equals("PREPARING") || s.equals("COOKING") || s.equals("ACCEPTED") || s.equals("IN_PREPARATION")) {
 			return "PREPARING";
@@ -184,7 +184,7 @@ public class OrderDAOImpl implements OrderDAO {
 	@Override
 	public void deleteOrder(int orderID) {
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(DELETE_QUERY)) {
+				PreparedStatement pstmt = connection.prepareStatement(DELETE_QUERY)) {
 
 			pstmt.setInt(1, orderID);
 
@@ -201,8 +201,8 @@ public class OrderDAOImpl implements OrderDAO {
 		List<Orders> al = new ArrayList<Orders>();
 
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(SELECTALL_QUERY);
-			 ResultSet result = pstmt.executeQuery()) {
+				PreparedStatement pstmt = connection.prepareStatement(SELECTALL_QUERY);
+				ResultSet result = pstmt.executeQuery()) {
 
 			al = extractAllOrderResultSet(result);
 
@@ -218,7 +218,7 @@ public class OrderDAOImpl implements OrderDAO {
 		List<Orders> al = new ArrayList<Orders>();
 
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(SELECT_BY_USER_QUERY)) {
+				PreparedStatement pstmt = connection.prepareStatement(SELECT_BY_USER_QUERY)) {
 
 			pstmt.setInt(1, userID);
 
@@ -238,7 +238,7 @@ public class OrderDAOImpl implements OrderDAO {
 		List<Orders> al = new ArrayList<Orders>();
 
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(SELECT_BY_RESTAURANT_QUERY)) {
+				PreparedStatement pstmt = connection.prepareStatement(SELECT_BY_RESTAURANT_QUERY)) {
 
 			pstmt.setInt(1, restaurantID);
 
@@ -286,8 +286,7 @@ public class OrderDAOImpl implements OrderDAO {
 				totalAmount,
 				status,
 				paymentMethod,
-				paymentStatus
-		);
+				paymentStatus);
 
 		try {
 			int driverID = res.getInt("driverID");
@@ -305,7 +304,7 @@ public class OrderDAOImpl implements OrderDAO {
 	public void assignDriver(int orderID, int driverID) {
 		String sql = "UPDATE orders SET driverID = ?, status = 'OUT_FOR_DELIVERY' WHERE orderID = ?";
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
 			if (driverID > 0) {
 				pstmt.setInt(1, driverID);
@@ -317,10 +316,12 @@ public class OrderDAOImpl implements OrderDAO {
 
 			// Mark driver status as BUSY
 			if (driverID > 0) {
-				try (PreparedStatement dStmt = connection.prepareStatement("UPDATE driver SET status = 'BUSY' WHERE driverID = ?")) {
+				try (PreparedStatement dStmt = connection
+						.prepareStatement("UPDATE driver SET status = 'BUSY' WHERE driverID = ?")) {
 					dStmt.setInt(1, driverID);
 					dStmt.executeUpdate();
-				} catch (SQLException ignore) {}
+				} catch (SQLException ignore) {
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -332,7 +333,7 @@ public class OrderDAOImpl implements OrderDAO {
 		List<Orders> al = new ArrayList<>();
 		String sql = "SELECT * FROM orders WHERE driverID = ? ORDER BY orderDate DESC";
 		try (Connection connection = DBConnection.getConnection();
-			 PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
 			pstmt.setInt(1, driverID);
 			try (ResultSet result = pstmt.executeQuery()) {
@@ -345,15 +346,17 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public int createOrderWithItems(Orders order, List<com.foodRush.model.OrderItem> items) {
+	public int createOrderWithItems(Orders order, List<OrderItem> items) {
 		int generatedId = 0;
 		String insertOrderItemQuery = "INSERT INTO orderitem(OrderID, MenuID, Quantity, ItemTotal) VALUES(?,?,?,?)";
 
 		try (Connection connection = DBConnection.getConnection()) {
-			if (connection == null) return 0;
+			if (connection == null)
+				return 0;
 			connection.setAutoCommit(false);
 
-			try (PreparedStatement orderPstmt = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+			try (PreparedStatement orderPstmt = connection.prepareStatement(INSERT_QUERY,
+					Statement.RETURN_GENERATED_KEYS)) {
 				orderPstmt.setInt(1, order.getUserID());
 				orderPstmt.setInt(2, order.getRestaurantID());
 				orderPstmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
@@ -373,7 +376,7 @@ public class OrderDAOImpl implements OrderDAO {
 
 				if (generatedId > 0 && items != null && !items.isEmpty()) {
 					try (PreparedStatement itemPstmt = connection.prepareStatement(insertOrderItemQuery)) {
-						for (com.foodRush.model.OrderItem item : items) {
+						for (OrderItem item : items) {
 							itemPstmt.setInt(1, generatedId);
 							itemPstmt.setInt(2, item.getMenuID());
 							itemPstmt.setInt(3, item.getQuantity());

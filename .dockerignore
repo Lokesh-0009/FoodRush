@@ -1,0 +1,11 @@
+.git
+.gitignore
+.settings/
+.project
+.classpath
+build/
+bin/
+*.md
+sources.txt
+database/
+*.log
