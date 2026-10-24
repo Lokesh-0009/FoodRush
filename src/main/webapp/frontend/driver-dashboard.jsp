@@ -12,8 +12,18 @@
 
 <%
     User loggedUser = (User) session.getAttribute("user");
+    if (loggedUser == null || loggedUser.getRole() == null ||
+        (!loggedUser.getRole().toUpperCase().contains("DRIVER") &&
+         !loggedUser.getRole().toUpperCase().contains("ADMIN"))) {
+        response.sendRedirect(request.getContextPath() + "/login?redirect=driver/dashboard");
+        return;
+    }
+    if (request.getAttribute("driver") == null) {
+        response.sendRedirect(request.getContextPath() + "/driver/dashboard");
+        return;
+    }
     Driver driver = (Driver) request.getAttribute("driver");
-    String driverName = (loggedUser != null && loggedUser.getName() != null) ? loggedUser.getName() : "Delivery Partner";
+    String driverName = (loggedUser.getName() != null) ? loggedUser.getName() : "Delivery Partner";
     String driverPhone = (loggedUser != null && loggedUser.getPhone() != null) ? loggedUser.getPhone() : "9876500000";
     String vehicleNumber = (driver != null && driver.getVehicleNumber() != null) ? driver.getVehicleNumber() : "KA-01-DR-1000";
     String vehicleType = (driver != null && driver.getVehicleType() != null) ? driver.getVehicleType() : "Bike";

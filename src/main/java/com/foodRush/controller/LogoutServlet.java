@@ -47,10 +47,23 @@ public class LogoutServlet extends HttpServlet {
 		}
 
 		String redirect = request.getParameter("redirect");
+		String safeRedirect = "/home";
 		if (redirect != null && !redirect.trim().isEmpty()) {
-			response.sendRedirect(request.getContextPath() + redirect);
-		} else {
-			response.sendRedirect(request.getContextPath() + "/home");
+			String trimmed = redirect.trim();
+			String ctx = request.getContextPath();
+			if (ctx != null && !ctx.isEmpty() && trimmed.startsWith(ctx)) {
+				trimmed = trimmed.substring(ctx.length());
+			}
+			if (!trimmed.startsWith("http://") && !trimmed.startsWith("https://") 
+					&& !trimmed.startsWith("//") && !trimmed.startsWith("\\")) {
+				if (!trimmed.startsWith("/")) {
+					trimmed = "/" + trimmed;
+				}
+				if (!trimmed.startsWith("//") && !trimmed.startsWith("/\\")) {
+					safeRedirect = trimmed;
+				}
+			}
 		}
+		response.sendRedirect(request.getContextPath() + safeRedirect);
 	}
 }

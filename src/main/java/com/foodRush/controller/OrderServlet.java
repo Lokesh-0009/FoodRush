@@ -79,9 +79,15 @@ public class OrderServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String servletPath = request.getServletPath();
 		String action = request.getParameter("action");
 		if ("cancel".equalsIgnoreCase(action)) {
 			handleCancelOrder(request, response);
+			return;
+		}
+		// Guard: Do not execute order placement on POSTs meant for other endpoints
+		if (servletPath.contains("order-tracking") || servletPath.contains("orders")) {
+			response.sendRedirect(request.getContextPath() + "/home");
 			return;
 		}
 		processOrderPlacement(request, response);
@@ -146,10 +152,6 @@ public class OrderServlet extends HttpServlet {
 					? Integer.parseInt(resIdParam.trim())
 					: cart.getRestaurantID();
 
-			double totalAmount = (totalAmountParam != null && !totalAmountParam.trim().isEmpty())
-					? Double.parseDouble(totalAmountParam.trim())
-					: cart.getGrandTotal();
-
 			if (paymentMethod == null || paymentMethod.trim().isEmpty()) {
 				paymentMethod = "COD";
 			}
@@ -158,6 +160,7 @@ public class OrderServlet extends HttpServlet {
 			if (tipAmountParam != null && !tipAmountParam.trim().isEmpty()) {
 				try {
 					tipAmount = Integer.parseInt(tipAmountParam.trim());
+					if (tipAmount < 0) tipAmount = 0;
 				} catch (NumberFormatException e) {
 					tipAmount = 0;
 				}
@@ -174,13 +177,47 @@ public class OrderServlet extends HttpServlet {
 				if (user != null && user.getId() <= 0) {
 					session.removeAttribute("user");
 				}
-				session.setAttribute("redirectAfterLogin", request.getContextPath() + "/checkout");
+				session.setAttribute("redirectAfterLogin", "/checkout");
 				response.sendRedirect(request.getContextPath() + "/login?redirect=checkout");
 				return;
 			}
 			int userID = user.getId();
 
-			// 1. Prepare Order and Items
+			// If new address provided in checkout form, update user profile in DB
+			if (address != null && !address.trim().isEmpty()) {
+				user.setAddress(address.trim());
+				userDAO.updateUser(user);
+				session.setAttribute("user", user);
+			}
+
+			// 1. Prepare Order and Items - Recalculate price strictly from DB to eliminate price tampering
+			double verifiedItemTotal = 0.0;
+			List<OrderItem> itemsList = new java.util.ArrayList<>();
+			for (CartItem item : cart.getCartItems()) {
+				Menu dbMenu = menuDAO.getMenu(item.getMenuID());
+				double unitPrice = (dbMenu != null && dbMenu.getPrice() > 0) ? dbMenu.getPrice() : item.getUnitPrice();
+				int qty = Math.max(1, Math.min(item.getQuantity(), 99));
+				double lineTotal = Math.round(unitPrice * qty * 100.0) / 100.0;
+				verifiedItemTotal += lineTotal;
+
+				OrderItem orderItem = new OrderItem(
+					0,
+					0,
+					item.getMenuID(),
+					qty,
+					lineTotal
+				);
+				itemsList.add(orderItem);
+			}
+
+			// Authoritatively calculate fees & discount on server
+			double deliveryFee = (verifiedItemTotal >= 400 || verifiedItemTotal == 0) ? 0.0 : 40.0;
+			double platformFee = 5.0;
+			double gstTax = Math.round(verifiedItemTotal * 0.05);
+			double discount = Math.min(cart.getDiscountAmount(), verifiedItemTotal);
+			double totalAmount = verifiedItemTotal + deliveryFee + platformFee + gstTax - discount + tipAmount;
+			totalAmount = Math.max(0.0, Math.round(totalAmount * 100.0) / 100.0);
+
 			Orders order = new Orders(
 				userID,
 				restaurantID,
@@ -189,18 +226,6 @@ public class OrderServlet extends HttpServlet {
 				paymentMethod,
 				paymentStatus
 			);
-
-			List<OrderItem> itemsList = new java.util.ArrayList<>();
-			for (CartItem item : cart.getCartItems()) {
-				OrderItem orderItem = new OrderItem(
-					0,
-					0,
-					item.getMenuID(),
-					item.getQuantity(),
-					item.getItemTotal()
-				);
-				itemsList.add(orderItem);
-			}
 
 			// 2. Persist Order and Items atomically
 			int generatedOrderID = orderDAO.createOrderWithItems(order, itemsList);
@@ -275,8 +300,33 @@ public class OrderServlet extends HttpServlet {
 			return;
 		}
 
+		// Security Authorization Check: Prevent IDOR
+		HttpSession session = request.getSession(false);
+		User currentUser = (session != null) ? (User) session.getAttribute("user") : null;
+		Integer lastPlacedId = (session != null) ? (Integer) session.getAttribute("lastPlacedOrderId") : null;
+
+		boolean isAuthorized = false;
+		if (currentUser != null) {
+			String role = currentUser.getRole() != null ? currentUser.getRole().toUpperCase() : "";
+			if (role.contains("ADMIN") || role.contains("MANAGER")) {
+				isAuthorized = true;
+			} else if (role.contains("DRIVER")) {
+				isAuthorized = (order.getDriverID() != null && order.getDriverID() > 0);
+			} else if (order.getUserID() == currentUser.getId()) {
+				isAuthorized = true;
+			}
+		} else if (lastPlacedId != null && lastPlacedId == order.getOrderID()) {
+			isAuthorized = true;
+		}
+
+		if (!isAuthorized) {
+			response.sendRedirect(request.getContextPath() + "/orders");
+			return;
+		}
+
 		Restaurant restaurant = restaurantDAO.getRestaurant(order.getRestaurantID());
 		List<OrderItem> orderItems = orderItemDAO.getOrderItemsByOrderId(orderId);
+		User orderCustomer = userDAO.getUser(order.getUserID());
 
 		// Preload menu metadata map (menuId -> Menu object) for rich display in JSP
 		Map<Integer, Menu> menuMap = new HashMap<>();
@@ -299,6 +349,7 @@ public class OrderServlet extends HttpServlet {
 		request.setAttribute("orderItems", orderItems);
 		request.setAttribute("menuMap", menuMap);
 		request.setAttribute("assignedDriver", assignedDriver);
+		request.setAttribute("orderCustomer", orderCustomer);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/frontend/order-tracking.jsp");
 		dispatcher.forward(request, response);
@@ -313,7 +364,7 @@ public class OrderServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
-			session.setAttribute("redirectAfterLogin", request.getContextPath() + "/orders");
+			session.setAttribute("redirectAfterLogin", "/orders");
 			response.sendRedirect(request.getContextPath() + "/login?redirect=orders");
 			return;
 		}

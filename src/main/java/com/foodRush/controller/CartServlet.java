@@ -70,6 +70,12 @@ public class CartServlet extends HttpServlet {
 		boolean isAjax = "json".equalsIgnoreCase(format) 
 				|| "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
 
+		// Enforce safety: plain browser GET requests should not mutate cart state
+		if ("GET".equalsIgnoreCase(request.getMethod()) && !isAjax && !"view".equalsIgnoreCase(action)) {
+			response.sendRedirect(request.getContextPath() + "/cart");
+			return;
+		}
+
 		String conflictJson = null;
 		try {
 			if ("add".equalsIgnoreCase(action)) {
@@ -139,13 +145,35 @@ public class CartServlet extends HttpServlet {
 		String resIdParam = request.getParameter("restaurantId");
 		boolean forceReset = "true".equalsIgnoreCase(request.getParameter("forceReset"));
 
-		int menuId = (menuIdParam != null && !menuIdParam.trim().isEmpty()) ? Integer.parseInt(menuIdParam.trim().replace("item-", "")) : 0;
-		int qty = (qtyParam != null && !qtyParam.trim().isEmpty()) ? Integer.parseInt(qtyParam.trim()) : 1;
-		int resId = (resIdParam != null && !resIdParam.trim().isEmpty()) ? Integer.parseInt(resIdParam.trim()) : 0;
+		int menuId = 0;
+		if (menuIdParam != null && !menuIdParam.trim().isEmpty()) {
+			try {
+				menuId = Integer.parseInt(menuIdParam.trim().replace("item-", ""));
+			} catch (NumberFormatException e) {
+				menuId = 0;
+			}
+		}
+
+		int qty = 1;
+		if (qtyParam != null && !qtyParam.trim().isEmpty()) {
+			try {
+				qty = Integer.parseInt(qtyParam.trim());
+			} catch (NumberFormatException e) {
+				qty = 1;
+			}
+		}
+		qty = Math.max(1, Math.min(qty, 99));
+
+		int resId = 0;
+		if (resIdParam != null && !resIdParam.trim().isEmpty()) {
+			try {
+				resId = Integer.parseInt(resIdParam.trim());
+			} catch (NumberFormatException ignore) {}
+		}
 
 		if (menuId > 0) {
 			Menu menu = menuDAO.getMenu(menuId);
-			if (menu != null) {
+			if (menu != null && menu.getIsAvailable() != 0) {
 				int incomingResId = menu.getRestaurantID() > 0 ? menu.getRestaurantID() : resId;
 
 				// Check for restaurant conflict
@@ -164,6 +192,7 @@ public class CartServlet extends HttpServlet {
 				String name = (menu.getItemName() != null) ? menu.getItemName().toLowerCase() : "";
 				boolean isVeg = cat.contains("veg") || name.contains("veg") || name.contains("paneer") || name.contains("dal");
 
+				// Always use authentic menu price from database (prevents price tampering)
 				CartItem item = new CartItem(
 					menu.getMenuID(),
 					incomingResId,
@@ -184,28 +213,7 @@ public class CartServlet extends HttpServlet {
 
 				cart.addItem(item, forceReset);
 			} else {
-				// Fallback if menu item not found in DB directly
-				String name = request.getParameter("name");
-				String priceParam = request.getParameter("price");
-				double price = (priceParam != null && !priceParam.trim().isEmpty()) ? Double.parseDouble(priceParam.trim()) : 200.0;
-				if (name != null && !name.trim().isEmpty()) {
-					if (cart.hasRestaurantConflict(resId) && !forceReset) {
-						Restaurant newRes = restaurantDAO.getRestaurant(resId);
-						String newResName = (newRes != null && newRes.getName() != null) ? newRes.getName() : "another restaurant";
-						return String.format("{\"success\":false,\"conflict\":true,\"currentRestaurant\":\"%s\",\"newRestaurant\":\"%s\",\"currentRestaurantId\":%d,\"newRestaurantId\":%d}",
-							cart.getRestaurantName() != null ? cart.getRestaurantName().replace("\"", "\\\"") : "",
-							newResName.replace("\"", "\\\""),
-							cart.getRestaurantID(),
-							resId
-						);
-					}
-					Restaurant res = restaurantDAO.getRestaurant(resId);
-					if (res != null && res.getName() != null) {
-						cart.setRestaurantName(res.getName());
-					}
-					CartItem item = new CartItem(menuId, resId, name, price, qty, null, "Main Course", true);
-					cart.addItem(item, forceReset);
-				}
+				return "{\"success\":false,\"conflict\":false,\"error\":\"Menu item not available.\"}";
 			}
 		}
 		return null;
@@ -216,17 +224,26 @@ public class CartServlet extends HttpServlet {
 		String qtyParam = request.getParameter("quantity");
 
 		if (menuIdParam != null && qtyParam != null) {
-			int menuId = Integer.parseInt(menuIdParam.trim().replace("item-", ""));
-			int qty = Integer.parseInt(qtyParam.trim());
-			cart.updateQuantity(menuId, qty);
+			try {
+				int menuId = Integer.parseInt(menuIdParam.trim().replace("item-", ""));
+				int qty = Integer.parseInt(qtyParam.trim());
+				if (qty > 99) qty = 99;
+				if (qty <= 0) {
+					cart.removeItem(menuId);
+				} else {
+					cart.updateQuantity(menuId, qty);
+				}
+			} catch (NumberFormatException ignore) {}
 		}
 	}
 
 	private void handleRemove(HttpServletRequest request, Cart cart) {
 		String menuIdParam = request.getParameter("menuId");
 		if (menuIdParam != null) {
-			int menuId = Integer.parseInt(menuIdParam.trim().replace("item-", ""));
-			cart.removeItem(menuId);
+			try {
+				int menuId = Integer.parseInt(menuIdParam.trim().replace("item-", ""));
+				cart.removeItem(menuId);
+			} catch (NumberFormatException ignore) {}
 		}
 	}
 
@@ -236,14 +253,14 @@ public class CartServlet extends HttpServlet {
 			code = code.trim().toUpperCase();
 			if ("RUSH50".equals(code)) {
 				cart.setCouponCode("RUSH50");
-				cart.setDiscountAmount(50.0);
+				cart.setDiscountAmount(Math.min(50.0, cart.getItemTotal()));
 			} else if ("FEAST100".equals(code)) {
 				cart.setCouponCode("FEAST100");
-				cart.setDiscountAmount(100.0);
+				cart.setDiscountAmount(Math.min(100.0, cart.getItemTotal()));
 			} else if ("WELCOME20".equals(code)) {
 				cart.setCouponCode("WELCOME20");
 				double discount = Math.min(60.0, cart.getItemTotal() * 0.20);
-				cart.setDiscountAmount(discount);
+				cart.setDiscountAmount(Math.min(discount, cart.getItemTotal()));
 			} else {
 				cart.setCouponCode("");
 				cart.setDiscountAmount(0.0);

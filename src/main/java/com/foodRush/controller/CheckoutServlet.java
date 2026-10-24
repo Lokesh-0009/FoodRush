@@ -47,7 +47,7 @@ public class CheckoutServlet extends HttpServlet {
 			if (user != null && user.getId() <= 0) {
 				session.removeAttribute("user");
 			}
-			session.setAttribute("redirectAfterLogin", request.getContextPath() + "/checkout");
+			session.setAttribute("redirectAfterLogin", "/checkout");
 			response.sendRedirect(request.getContextPath() + "/login?redirect=checkout");
 			return;
 		}

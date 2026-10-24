@@ -56,10 +56,10 @@ public class LoginServlet extends HttpServlet {
 
 		// If user is already authenticated, redirect them directly
 		if (loggedInUser != null) {
-			if (redirectParam != null && !redirectParam.trim().isEmpty()) {
-				String target = redirectParam.startsWith("/") ? redirectParam : "/" + redirectParam;
+			String safeTarget = sanitizeRedirect(request, redirectParam);
+			if (safeTarget != null) {
 				session.removeAttribute("redirectAfterLogin");
-				response.sendRedirect(request.getContextPath() + target);
+				response.sendRedirect(request.getContextPath() + safeTarget);
 			} else if ("DRIVER".equalsIgnoreCase(loggedInUser.getRole())) {
 				response.sendRedirect(request.getContextPath() + "/driver/dashboard");
 			} else if ("ADMIN".equalsIgnoreCase(loggedInUser.getRole())) {
@@ -153,9 +153,9 @@ public class LoginServlet extends HttpServlet {
 		session.removeAttribute("redirectAfterLogin");
 
 		// Redirect to role-appropriate interface
-		if (redirect != null && !redirect.trim().isEmpty()) {
-			String target = redirect.startsWith("/") ? redirect : "/" + redirect;
-			response.sendRedirect(request.getContextPath() + target);
+		String safeTarget = sanitizeRedirect(request, redirect);
+		if (safeTarget != null) {
+			response.sendRedirect(request.getContextPath() + safeTarget);
 		} else if (user != null && "DRIVER".equalsIgnoreCase(user.getRole())) {
 			response.sendRedirect(request.getContextPath() + "/driver/dashboard");
 		} else if (user != null && "ADMIN".equalsIgnoreCase(user.getRole())) {
@@ -291,11 +291,33 @@ public class LoginServlet extends HttpServlet {
 		session.removeAttribute("redirectAfterLogin");
 
 		// Redirect to target (e.g. checkout) or home
-		if (redirect != null && !redirect.trim().isEmpty()) {
-			String target = redirect.startsWith("/") ? redirect : "/" + redirect;
-			response.sendRedirect(request.getContextPath() + target);
+		String safeTarget = sanitizeRedirect(request, redirect);
+		if (safeTarget != null) {
+			response.sendRedirect(request.getContextPath() + safeTarget);
 		} else {
 			response.sendRedirect(request.getContextPath() + "/home");
 		}
+	}
+
+	private String sanitizeRedirect(HttpServletRequest request, String redirect) {
+		if (redirect == null || redirect.trim().isEmpty()) {
+			return null;
+		}
+		String trimmed = redirect.trim();
+		String ctx = request.getContextPath();
+		if (ctx != null && !ctx.isEmpty() && trimmed.startsWith(ctx)) {
+			trimmed = trimmed.substring(ctx.length());
+		}
+		if (trimmed.startsWith("http://") || trimmed.startsWith("https://") 
+				|| trimmed.startsWith("//") || trimmed.startsWith("\\")) {
+			return null;
+		}
+		if (!trimmed.startsWith("/")) {
+			trimmed = "/" + trimmed;
+		}
+		if (trimmed.startsWith("//") || trimmed.startsWith("/\\")) {
+			return null;
+		}
+		return trimmed;
 	}
 }

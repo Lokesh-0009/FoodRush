@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List, java.util.Map, java.text.SimpleDateFormat, com.foodRush.model.Orders, com.foodRush.model.OrderItem, com.foodRush.model.Restaurant, com.foodRush.model.User, com.foodRush.model.Cart"%>
 <%
+    if (session.getAttribute("user") == null) {
+        session.setAttribute("redirectAfterLogin", "/orders");
+        response.sendRedirect(request.getContextPath() + "/login?redirect=orders");
+        return;
+    }
+    if (request.getAttribute("userOrders") == null) {
+        response.sendRedirect(request.getContextPath() + "/orders");
+        return;
+    }
+
     List<Orders> userOrders = (List<Orders>) request.getAttribute("userOrders");
     Map<Integer, Restaurant> restaurantMap = (Map<Integer, Restaurant>) request.getAttribute("restaurantMap");
     Map<Integer, List<OrderItem>> orderItemsMap = (Map<Integer, List<OrderItem>>) request.getAttribute("orderItemsMap");

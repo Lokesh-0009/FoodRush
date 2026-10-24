@@ -10,8 +10,19 @@
 
 <%
     User loggedUser = (User) session.getAttribute("user");
-    String adminName = (loggedUser != null && loggedUser.getName() != null) ? loggedUser.getName() : "System Admin";
-    String adminEmail = (loggedUser != null && loggedUser.getEmail() != null) ? loggedUser.getEmail() : "admin@foodrush.com";
+    if (loggedUser == null || loggedUser.getRole() == null ||
+        (!loggedUser.getRole().toUpperCase().contains("ADMIN") &&
+         !loggedUser.getRole().toUpperCase().contains("MANAGER") &&
+         !loggedUser.getRole().toUpperCase().contains("SUPER"))) {
+        response.sendRedirect(request.getContextPath() + "/login?redirect=admin/orders");
+        return;
+    }
+    if (request.getAttribute("pendingOrders") == null) {
+        response.sendRedirect(request.getContextPath() + "/admin/orders");
+        return;
+    }
+    String adminName = (loggedUser.getName() != null) ? loggedUser.getName() : "System Admin";
+    String adminEmail = (loggedUser.getEmail() != null) ? loggedUser.getEmail() : "admin@foodrush.com";
 
     List<Orders> pendingOrders = (List<Orders>) request.getAttribute("pendingOrders");
     List<Orders> preparingOrders = (List<Orders>) request.getAttribute("preparingOrders");

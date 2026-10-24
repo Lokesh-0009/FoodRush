@@ -302,26 +302,34 @@ public class OrderDAOImpl implements OrderDAO {
 
 	@Override
 	public void assignDriver(int orderID, int driverID) {
-		String sql = "UPDATE orders SET driverID = ?, status = 'OUT_FOR_DELIVERY' WHERE orderID = ?";
-		try (Connection connection = DBConnection.getConnection();
-				PreparedStatement pstmt = connection.prepareStatement(sql)) {
-
-			if (driverID > 0) {
-				pstmt.setInt(1, driverID);
-			} else {
-				pstmt.setNull(1, java.sql.Types.INTEGER);
-			}
-			pstmt.setInt(2, orderID);
-			pstmt.executeUpdate();
-
-			// Mark driver status as BUSY
-			if (driverID > 0) {
-				try (PreparedStatement dStmt = connection
-						.prepareStatement("UPDATE driver SET status = 'BUSY' WHERE driverID = ?")) {
-					dStmt.setInt(1, driverID);
-					dStmt.executeUpdate();
-				} catch (SQLException ignore) {
+		String updateOrderSql = "UPDATE orders SET driverID = ?, status = 'OUT_FOR_DELIVERY' WHERE orderID = ?";
+		String updateDriverSql = "UPDATE driver SET status = 'BUSY' WHERE driverID = ?";
+		try (Connection connection = DBConnection.getConnection()) {
+			if (connection == null) return;
+			connection.setAutoCommit(false);
+			try {
+				try (PreparedStatement pstmt = connection.prepareStatement(updateOrderSql)) {
+					if (driverID > 0) {
+						pstmt.setInt(1, driverID);
+					} else {
+						pstmt.setNull(1, java.sql.Types.INTEGER);
+					}
+					pstmt.setInt(2, orderID);
+					pstmt.executeUpdate();
 				}
+
+				if (driverID > 0) {
+					try (PreparedStatement dStmt = connection.prepareStatement(updateDriverSql)) {
+						dStmt.setInt(1, driverID);
+						dStmt.executeUpdate();
+					}
+				}
+				connection.commit();
+			} catch (SQLException e) {
+				connection.rollback();
+				e.printStackTrace();
+			} finally {
+				connection.setAutoCommit(true);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

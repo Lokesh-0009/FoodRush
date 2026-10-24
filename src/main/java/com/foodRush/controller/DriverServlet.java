@@ -220,15 +220,17 @@ public class DriverServlet extends HttpServlet {
 					if (order != null && order.getDriverID() != null && order.getDriverID().equals(driver.getDriverID())) {
 						order.setStatus(newStatus.trim().toUpperCase());
 						
-						// If delivered and payment was COD, update payment status to COMPLETED
+						// If delivered, update payment status to PAID
 						if ("DELIVERED".equalsIgnoreCase(newStatus.trim())) {
-							order.setPaymentStatus("COMPLETED");
+							order.setPaymentStatus("PAID");
+							orderDAO.updateOrder(order);
 							driverDAO.updateDriverStatus(driver.getDriverID(), "AVAILABLE");
 						} else if ("OUT_FOR_DELIVERY".equalsIgnoreCase(newStatus.trim())) {
+							orderDAO.updateOrder(order);
 							driverDAO.updateDriverStatus(driver.getDriverID(), "BUSY");
+						} else {
+							orderDAO.updateOrder(order);
 						}
-
-						orderDAO.updateOrder(order);
 					}
 				}
 				response.sendRedirect(request.getContextPath() + "/driver/dashboard?orderUpdated=1");

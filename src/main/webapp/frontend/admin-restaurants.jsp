@@ -5,8 +5,19 @@
 
 <%
     User loggedUser = (User) session.getAttribute("user");
-    String adminName = (loggedUser != null && loggedUser.getName() != null) ? loggedUser.getName() : "System Admin";
-    String adminEmail = (loggedUser != null && loggedUser.getEmail() != null) ? loggedUser.getEmail() : "admin@foodrush.com";
+    if (loggedUser == null || loggedUser.getRole() == null ||
+        (!loggedUser.getRole().toUpperCase().contains("ADMIN") &&
+         !loggedUser.getRole().toUpperCase().contains("MANAGER") &&
+         !loggedUser.getRole().toUpperCase().contains("SUPER"))) {
+        response.sendRedirect(request.getContextPath() + "/login?redirect=admin/restaurants");
+        return;
+    }
+    if (request.getAttribute("restaurantsList") == null) {
+        response.sendRedirect(request.getContextPath() + "/admin/restaurants");
+        return;
+    }
+    String adminName = (loggedUser.getName() != null) ? loggedUser.getName() : "System Admin";
+    String adminEmail = (loggedUser.getEmail() != null) ? loggedUser.getEmail() : "admin@foodrush.com";
 
     List<Restaurant> restaurantsList = (List<Restaurant>) request.getAttribute("restaurantsList");
     Integer totalCountObj = (Integer) request.getAttribute("totalCount");

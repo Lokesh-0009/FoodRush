@@ -84,6 +84,10 @@ public class ForgotPasswordServlet extends HttpServlet {
 		// Attempt to dispatch real email to recipient
 		boolean emailSent = com.foodRush.util.EmailService.sendOtpEmail(email, otp);
 
+		if (!emailSent) {
+			System.out.println("[DEV / TEST] SMTP not configured. OTP for " + email + ": " + otp);
+		}
+
 		if (isJson) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
@@ -92,8 +96,8 @@ public class ForgotPasswordServlet extends HttpServlet {
 				out.print(String.format("{\"success\":true,\"emailSent\":true,\"message\":\"Verification code sent to your email (%s)! Please check your inbox.\",\"email\":\"%s\"}",
 					escapeJson(email), escapeJson(email)));
 			} else {
-				out.print(String.format("{\"success\":true,\"emailSent\":false,\"message\":\"Verification code generated! (SMTP not configured, OTP is %s)\",\"email\":\"%s\",\"demoOtp\":\"%s\"}",
-					otp, escapeJson(email), otp));
+				out.print(String.format("{\"success\":true,\"emailSent\":false,\"message\":\"Verification code generated (SMTP server offline, code logged to server console).\",\"email\":\"%s\"}",
+					escapeJson(email)));
 			}
 			out.flush();
 		} else {
@@ -102,8 +106,7 @@ public class ForgotPasswordServlet extends HttpServlet {
 			if (emailSent) {
 				request.setAttribute("successMessage", "Verification code sent to your email (" + email + ")! Please check your inbox and spam folder.");
 			} else {
-				request.setAttribute("demoOtp", otp);
-				request.setAttribute("successMessage", "Verification code generated! (SMTP not configured, OTP is " + otp + ")");
+				request.setAttribute("successMessage", "Verification code generated (SMTP server offline, code logged to server console).");
 			}
 			request.getRequestDispatcher("/frontend/forgot-password.jsp").forward(request, response);
 		}

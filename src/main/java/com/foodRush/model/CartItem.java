@@ -60,6 +60,14 @@ public class CartItem implements Serializable {
 		this.unitPrice = unitPrice;
 	}
 
+	public double getPrice() {
+		return unitPrice;
+	}
+
+	public void setPrice(double price) {
+		this.unitPrice = price;
+	}
+
 	public int getQuantity() {
 		return quantity;
 	}

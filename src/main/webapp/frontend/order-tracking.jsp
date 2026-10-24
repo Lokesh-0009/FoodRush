@@ -15,12 +15,17 @@
     String resName = (restaurant != null && restaurant.getName() != null) ? restaurant.getName() : "Selected Restaurant";
     String resAddress = (restaurant != null && restaurant.getAddress() != null) ? restaurant.getAddress() : "Bangalore";
 
+    User orderCustomer = (User) request.getAttribute("orderCustomer");
     String deliveryAddress = (String) session.getAttribute("lastDeliveryAddress");
     if (deliveryAddress == null || deliveryAddress.trim().isEmpty()) {
-        User user = (User) session.getAttribute("user");
-        deliveryAddress = (user != null && user.getAddress() != null && !user.getAddress().trim().isEmpty())
-                          ? user.getAddress()
-                          : "#42, 2nd Floor, 5th Cross, Koramangala 5th Block, Bangalore - 560095";
+        if (orderCustomer != null && orderCustomer.getAddress() != null && !orderCustomer.getAddress().trim().isEmpty()) {
+            deliveryAddress = orderCustomer.getAddress();
+        } else {
+            User user = (User) session.getAttribute("user");
+            deliveryAddress = (user != null && user.getAddress() != null && !user.getAddress().trim().isEmpty())
+                              ? user.getAddress()
+                              : "Delivery Address on File";
+        }
     }
 
     SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
