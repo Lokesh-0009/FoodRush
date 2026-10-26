@@ -30,6 +30,14 @@
   margin-bottom: var(--space-6);
 }
 
+@media (max-width: 540px) {
+  .checkout-step-card {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+}
+
+
 .step-header {
   display: flex;
   align-items: center;

@@ -869,3 +869,140 @@
 .switch-control input:checked + .switch-slider:before {
   transform: translateX(22px);
 }
+
+/* --------------------------------------------------------------------------
+   10. Responsive Overrides for Customer Profile Hub
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .profile-sidebar-card {
+    position: static;
+    padding: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .profile-nav-links {
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .profile-nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .profile-tab-button {
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: auto;
+    padding: 10px 14px;
+    border-radius: var(--radius-lg, 16px);
+    background: var(--color-surface-soft, rgba(0, 0, 0, 0.03));
+  }
+
+  .profile-tab-button span.profile-tab-btn-arrow {
+    display: none;
+  }
+
+  .profile-nav-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-hero-hud {
+    padding: 22px 18px 20px;
+    border-radius: var(--radius-xl, 20px);
+    margin-bottom: 20px;
+  }
+
+  .profile-hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .profile-user-summary {
+    gap: 16px;
+  }
+
+  .profile-avatar-holder {
+    width: 72px;
+    height: 72px;
+  }
+
+  .profile-avatar-fallback {
+    font-size: 26px;
+  }
+
+  .profile-hero-name {
+    font-size: 20px;
+  }
+
+  .profile-hero-contact {
+    font-size: 13px;
+  }
+
+  .profile-hero-actions {
+    width: 100%;
+  }
+
+  .btn-hero-order {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profile-kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .profile-kpi-pill {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .kpi-pill-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .kpi-pill-val {
+    font-size: 15px;
+  }
+
+  .profile-content-box {
+    padding: 16px 14px;
+    border-radius: var(--radius-lg, 16px);
+  }
+
+  .photo-preview-card {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .photo-btn-group {
+    justify-content: center;
+  }
+
+  .addresses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-save-profile {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .profile-kpi-row {
+    grid-template-columns: 1fr;
+  }
+}

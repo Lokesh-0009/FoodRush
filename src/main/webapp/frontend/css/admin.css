@@ -154,6 +154,10 @@
 }
 
 @media (max-width: 960px) {
+  #admin-sidebar-toggle {
+    display: inline-flex !important;
+  }
+
   .admin-sidebar {
     transform: translateX(-100%);
   }
@@ -944,4 +948,70 @@ select.form-select option {
   justify-content: flex-end;
   gap: var(--space-3);
   background-color: var(--color-surface-soft);
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsive Layout Overrides for Admin & Partner Portals
+   -------------------------------------------------------------------------- */
+@media (max-width: 960px) {
+  .admin-topbar {
+    padding: 12px 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-topbar {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+  }
+
+  .admin-page-content {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .admin-card {
+    padding: 16px 12px;
+    border-radius: var(--radius-lg);
+  }
+
+  .admin-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .admin-table-wrapper {
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -4px;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 12px;
+    white-space: nowrap;
+  }
+
+  .modal-dialog {
+    width: 96%;
+    margin: 10px auto;
+  }
+
+  .modal-body {
+    padding: var(--space-4);
+  }
+
+  .modal-footer {
+    padding: var(--space-3) var(--space-4);
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-value {
+    font-size: 22px;
+  }
+
+  .admin-brand-logo {
+    font-size: 17px;
+  }
 }

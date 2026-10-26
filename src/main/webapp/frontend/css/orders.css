@@ -136,3 +136,52 @@
   align-items: center;
   gap: var(--space-2);
 }
+
+/* --------------------------------------------------------------------------
+   Mobile Responsive Adjustments for Orders History Page
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .order-history-card {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .order-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .order-card-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .order-actions-group {
+    width: 100%;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .order-actions-group .btn {
+    flex: 1;
+    min-width: 110px;
+    justify-content: center;
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .orders-filter-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+
+  .order-tab-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+}

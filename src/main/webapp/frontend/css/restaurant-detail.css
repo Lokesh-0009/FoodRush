@@ -590,6 +590,42 @@
 }
 
 @media (max-width: 640px) {
+  .restaurant-hero-card {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .restaurant-hero-top {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .restaurant-hero-title {
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  .restaurant-hero-rating-box {
+    align-self: flex-start;
+    padding: 6px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .restaurant-hero-rating-count {
+    margin-top: 0;
+    font-size: 11px;
+  }
+
+  .restaurant-metrics-bar {
+    gap: 12px;
+  }
+
+  .metric-item {
+    font-size: 12px;
+  }
+
   .sticky-cart-bar {
     padding: 12px var(--space-4);
   }

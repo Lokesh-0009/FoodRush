@@ -459,6 +459,37 @@
     </div>
   </div>
 
+  <!-- Mobile Navigation Drawer -->
+  <div class="drawer-overlay" id="mobile-nav-drawer">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <div class="brand-logo">
+          <div class="brand-icon"><i class="fa-solid fa-bolt-lightning text-primary"></i></div>
+          <span>Food<span class="brand-name-highlight">Rush</span></span>
+        </div>
+        <button type="button" class="modal-close-btn" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="drawer-body">
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 16px; font-size: var(--font-size-body-lg); font-weight: 600;">
+          <li><a href="<%= request.getContextPath() %>/home"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li><a href="<%= request.getContextPath() %>/restaurants" class="text-brand"><i class="fa-solid fa-utensils"></i> Restaurants</a></li>
+          <li><a href="<%= request.getContextPath() %>/orders"><i class="fa-solid fa-box"></i> Orders</a></li>
+          <li><a href="<%= request.getContextPath() %>/profile"><i class="fa-solid fa-user"></i> Profile</a></li>
+          <li><a href="<%= request.getContextPath() %>/cart"><i class="fa-solid fa-bag-shopping"></i> Cart</a></li>
+          <li><a href="<%= request.getContextPath() %>/login"><i class="fa-solid fa-key"></i> Sign In / Account</a></li>
+        </ul>
+
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border);">
+          <button type="button" class="theme-toggle-btn mobile-theme-toggle" aria-label="Toggle Dark/Light Mode">
+            <span class="theme-icon sun-icon"><i class="fa-solid fa-sun"></i></span>
+            <span class="theme-icon moon-icon"><i class="fa-solid fa-moon"></i></span>
+            <span class="theme-toggle-label">Dark Mode</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div class="toast-container" id="toast-container"></div>
 

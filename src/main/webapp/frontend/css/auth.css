@@ -593,3 +593,32 @@ input::-ms-clear {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(229, 9, 20, 0.35);
 }
+
+@media (max-width: 480px) {
+  .auth-form-container {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .auth-header-title {
+    font-size: 24px;
+  }
+
+  .auth-tabs-bar {
+    padding: 3px;
+  }
+
+  .auth-tab-button {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .demo-btn-group {
+    flex-wrap: wrap;
+  }
+
+  .demo-btn-group .btn-secondary {
+    flex: 1;
+    text-align: center;
+    min-width: 80px;
+  }
+}

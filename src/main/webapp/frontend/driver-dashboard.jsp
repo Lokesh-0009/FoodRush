@@ -508,6 +508,96 @@
       color: var(--color-text-secondary);
       grid-column: 1 / -1;
     }
+
+    /* --------------------------------------------------------------------------
+       Mobile & Tablet Responsive Adjustments (Desktop remains untouched)
+       -------------------------------------------------------------------------- */
+    @media (max-width: 900px) {
+      .driver-nav-inner {
+        gap: 12px;
+      }
+      .driver-kpi-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .delivery-cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .driver-navbar {
+        padding: 12px 14px;
+      }
+      .driver-nav-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .driver-brand-wrap {
+        justify-content: space-between;
+      }
+      .driver-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .driver-main {
+        padding: 16px 12px;
+      }
+      .driver-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .driver-kpi-card {
+        padding: 12px 10px;
+        gap: 10px;
+      }
+      .kpi-icon-wrap {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+      .kpi-title {
+        font-size: 11px;
+      }
+      .kpi-val {
+        font-size: 17px;
+      }
+      .driver-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        gap: 6px;
+        padding-bottom: 6px;
+      }
+      .driver-tab-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .delivery-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .delivery-card {
+        padding: 16px 14px;
+      }
+      .delivery-actions-bar {
+        flex-direction: column;
+      }
+      .btn-call {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .driver-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 

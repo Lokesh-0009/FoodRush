@@ -491,3 +491,36 @@
 .instruction-tag-pill:hover .tag-content {
   border-color: var(--color-primary);
 }
+
+/* --------------------------------------------------------------------------
+   Mobile Responsive Adjustments for Cart Page
+   -------------------------------------------------------------------------- */
+@media (max-width: 540px) {
+  .cart-card {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .cart-item-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .cart-item-actions {
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 6px;
+    border-top: 1px dotted var(--color-border-light);
+  }
+
+  .coupon-input-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .coupon-input-group .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

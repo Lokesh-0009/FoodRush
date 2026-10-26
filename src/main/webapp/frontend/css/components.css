@@ -593,7 +593,87 @@
   }
 
   .mobile-nav-toggle {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    gap: var(--space-2);
+  }
+
+  .nav-left {
+    gap: var(--space-3);
+  }
+
+  .location-trigger {
+    padding: 6px 10px;
+    font-size: var(--font-size-caption);
+  }
+
+  .location-trigger .loc-text {
+    max-width: 110px;
+  }
+
+  .nav-right {
+    gap: 8px;
+  }
+
+  .nav-cart-btn {
+    padding: 7px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    height: 60px;
+  }
+
+  .location-trigger {
+    padding: 5px 8px;
+  }
+
+  .location-trigger .loc-text {
+    max-width: 65px;
+    font-size: 11px;
+  }
+
+  .location-trigger .loc-arrow {
+    display: none;
+  }
+
+  .nav-cart-btn span:nth-child(2) {
+    display: none !important; /* Hide text 'Cart', show icon and badge */
+  }
+
+  .nav-cart-btn {
+    padding: 7px 10px;
+    gap: 4px;
+  }
+
+  .nav-user-name {
+    display: none !important; /* Hide username string on tiny screens */
+  }
+
+  .dropdown-chevron {
+    display: none !important;
+  }
+
+  .nav-user-pill {
+    padding: 4px;
+    background: transparent;
+    border: none;
+  }
+
+  .brand-logo span {
+    font-size: 1.15rem;
+  }
+
+  .theme-toggle-btn {
+    width: 36px;
+    height: 36px;
   }
 }
 
