@@ -354,6 +354,65 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
+	public List<Orders> getAvailableOrders() {
+		List<Orders> list = new ArrayList<>();
+		String sql = "SELECT * FROM orders WHERE (driverID IS NULL OR driverID = 0) "
+				+ "AND UPPER(Status) NOT IN ('DELIVERED', 'COMPLETED', 'CANCELLED', 'CANCELED') "
+				+ "ORDER BY OrderDate DESC";
+		try (Connection connection = DBConnection.getConnection()) {
+			if (connection == null) return list;
+			try (PreparedStatement pstmt = connection.prepareStatement(sql);
+					ResultSet result = pstmt.executeQuery()) {
+				list = extractAllOrderResultSet(result);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public boolean acceptOrder(int orderID, int driverID) {
+		String updateOrderSql = "UPDATE orders SET driverID = ?, "
+				+ "status = CASE WHEN UPPER(Status) IN ('PLACED', 'PENDING') THEN 'CONFIRMED' ELSE Status END "
+				+ "WHERE orderID = ? AND (driverID IS NULL OR driverID = 0)";
+		String updateDriverSql = "UPDATE driver SET status = 'BUSY' WHERE driverID = ?";
+		try (Connection connection = DBConnection.getConnection()) {
+			if (connection == null) return false;
+			connection.setAutoCommit(false);
+			try {
+				int affectedRows = 0;
+				try (PreparedStatement pstmt = connection.prepareStatement(updateOrderSql)) {
+					pstmt.setInt(1, driverID);
+					pstmt.setInt(2, orderID);
+					affectedRows = pstmt.executeUpdate();
+				}
+
+				if (affectedRows > 0) {
+					try (PreparedStatement dStmt = connection.prepareStatement(updateDriverSql)) {
+						dStmt.setInt(1, driverID);
+						dStmt.executeUpdate();
+					}
+					connection.commit();
+					return true;
+				} else {
+					connection.rollback();
+					return false;
+				}
+			} catch (SQLException e) {
+				connection.rollback();
+				e.printStackTrace();
+				return false;
+			} finally {
+				connection.setAutoCommit(true);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
 	public int createOrderWithItems(Orders order, List<OrderItem> items) {
 		int generatedId = 0;
 		String insertOrderItemQuery = "INSERT INTO orderitem(OrderID, MenuID, Quantity, ItemTotal) VALUES(?,?,?,?)";

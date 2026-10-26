@@ -157,10 +157,51 @@ public class DriverServlet extends HttpServlet {
 				}
 			}
 
-			// Calculate earnings: base 50 Rs per delivery
+			// 3. Fetch all unassigned available orders waiting for a driver
+			List<Orders> availableOrders = orderDAO.getAvailableOrders();
+			if (availableOrders == null) {
+				availableOrders = new ArrayList<>();
+			}
+
+			for (Orders order : availableOrders) {
+				// Load Restaurant if not already loaded
+				if (!restaurantMap.containsKey(order.getRestaurantID())) {
+					Restaurant rest = restaurantDAO.getRestaurant(order.getRestaurantID());
+					if (rest != null) {
+						restaurantMap.put(order.getRestaurantID(), rest);
+					}
+				}
+
+				// Load Customer if not already loaded
+				if (!customerMap.containsKey(order.getUserID())) {
+					User cust = userDAO.getUser(order.getUserID());
+					if (cust != null) {
+						customerMap.put(order.getUserID(), cust);
+					}
+				}
+
+				// Load items for this order
+				if (!orderItemsMap.containsKey(order.getOrderID())) {
+					List<OrderItem> items = orderItemDAO.getOrderItemsByOrderId(order.getOrderID());
+					if (items != null) {
+						orderItemsMap.put(order.getOrderID(), items);
+						for (OrderItem item : items) {
+							if (!menuMap.containsKey(item.getMenuID())) {
+								Menu m = menuDAO.getMenu(item.getMenuID());
+								if (m != null) {
+									menuMap.put(item.getMenuID(), m);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// Calculate earnings: base 55 Rs per delivery
 			double totalEarnings = completedDeliveries.size() * 55.0;
 
 			request.setAttribute("driver", driver);
+			request.setAttribute("availableOrders", availableOrders);
 			request.setAttribute("activeDeliveries", activeDeliveries);
 			request.setAttribute("completedDeliveries", completedDeliveries);
 			request.setAttribute("restaurantMap", restaurantMap);
@@ -198,6 +239,24 @@ public class DriverServlet extends HttpServlet {
 
 			String action = request.getParameter("action");
 
+			if ("acceptOrder".equalsIgnoreCase(action)) {
+				// Driver accepts an unassigned order
+				String orderIdParam = request.getParameter("orderID");
+				if (orderIdParam != null && !orderIdParam.trim().isEmpty()) {
+					int orderId = Integer.parseInt(orderIdParam.trim());
+					boolean accepted = orderDAO.acceptOrder(orderId, driver.getDriverID());
+					if (accepted) {
+						response.sendRedirect(request.getContextPath() + "/driver/dashboard?orderAccepted=1&tab=active");
+						return;
+					} else {
+						response.sendRedirect(request.getContextPath() + "/driver/dashboard?error=Order+was+already+accepted+or+unavailable&tab=available");
+						return;
+					}
+				}
+				response.sendRedirect(request.getContextPath() + "/driver/dashboard");
+				return;
+			}
+
 			if ("updateStatus".equalsIgnoreCase(action)) {
 				// Driver updates duty status (AVAILABLE, BUSY, OFFLINE)
 				String status = request.getParameter("status");
@@ -233,7 +292,7 @@ public class DriverServlet extends HttpServlet {
 						}
 					}
 				}
-				response.sendRedirect(request.getContextPath() + "/driver/dashboard?orderUpdated=1");
+				response.sendRedirect(request.getContextPath() + "/driver/dashboard?orderUpdated=1&tab=active");
 				return;
 			}
 

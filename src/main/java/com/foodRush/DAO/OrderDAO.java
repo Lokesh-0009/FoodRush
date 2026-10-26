@@ -25,4 +25,8 @@ public interface OrderDAO {
 	void assignDriver(int orderID, int driverID);
 
 	List<Orders> getOrdersByDriverId(int driverID);
+
+	List<Orders> getAvailableOrders();
+
+	boolean acceptOrder(int orderID, int driverID);
 }

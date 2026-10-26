@@ -30,6 +30,7 @@
     String driverStatus = (driver != null && driver.getStatus() != null) ? driver.getStatus().toUpperCase() : "AVAILABLE";
     double rating = (driver != null && driver.getRating() > 0) ? driver.getRating() : 4.9;
 
+    List<Orders> availableOrders = (List<Orders>) request.getAttribute("availableOrders");
     List<Orders> activeDeliveries = (List<Orders>) request.getAttribute("activeDeliveries");
     List<Orders> completedDeliveries = (List<Orders>) request.getAttribute("completedDeliveries");
     Map<Integer, Restaurant> restaurantMap = (Map<Integer, Restaurant>) request.getAttribute("restaurantMap");
@@ -40,6 +41,7 @@
     Double totalEarningsObj = (Double) request.getAttribute("totalEarnings");
     double totalEarnings = (totalEarningsObj != null) ? totalEarningsObj : 0.0;
 
+    int availableCount = (availableOrders != null) ? availableOrders.size() : 0;
     int activeCount = (activeDeliveries != null) ? activeDeliveries.size() : 0;
     int completedCount = (completedDeliveries != null) ? completedDeliveries.size() : 0;
 
@@ -48,6 +50,19 @@
 
     String statusUpdatedParam = request.getParameter("statusUpdated");
     String orderUpdatedParam = request.getParameter("orderUpdated");
+    String orderAcceptedParam = request.getParameter("orderAccepted");
+    String errorMessage = request.getParameter("error");
+
+    String initialTab = request.getParameter("tab");
+    if (initialTab == null || initialTab.trim().isEmpty()) {
+        if (activeCount > 0) {
+            initialTab = "active";
+        } else if (availableCount > 0) {
+            initialTab = "available";
+        } else {
+            initialTab = "available";
+        }
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -279,6 +294,10 @@
     .delivery-card:hover {
       transform: translateY(-2px);
     }
+    .delivery-card.available-order {
+      border-left: 5px solid #10B981;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.08);
+    }
     .delivery-card.active-order {
       border-left: 5px solid #F59E0B;
     }
@@ -449,6 +468,35 @@
       align-items: center;
       gap: 6px;
     }
+    .btn-accept {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+    .btn-accept:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+    }
+    .tab-counter.available-pill {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+      font-weight: 800;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.25); }
+    }
+    .pulse-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 6px #10B981;
+      margin-right: 6px;
+      animation: pulse-dot 1.5s infinite ease-in-out;
+    }
 
     /* Empty state */
     .empty-deliveries-card {
@@ -518,6 +566,16 @@
     <main class="driver-main" id="driver-main">
 
       <!-- Alerts / Notifications -->
+      <% if ("1".equals(orderAcceptedParam)) { %>
+        <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10B981; color: #10B981; padding: 12px 18px; border-radius: var(--radius-md); margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+          <span><i class="fa-solid fa-circle-check"></i></span> Order accepted successfully! It is now in your <strong>Active Deliveries</strong>. Head to the restaurant for pickup.
+        </div>
+      <% } %>
+      <% if (errorMessage != null && !errorMessage.trim().isEmpty()) { %>
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; color: #EF4444; padding: 12px 18px; border-radius: var(--radius-md); margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+          <span><i class="fa-solid fa-triangle-exclamation"></i></span> <%= errorMessage %>
+        </div>
+      <% } %>
       <% if ("1".equals(statusUpdatedParam)) { %>
         <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10B981; color: #10B981; padding: 12px 18px; border-radius: var(--radius-md); margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
           <span><i class="fa-solid fa-circle-check"></i></span> Your duty status has been updated to <strong><%= driverStatus %></strong>.
@@ -531,12 +589,22 @@
 
       <!-- Top Rider Metrics -->
       <section class="driver-kpi-grid">
-        <div class="driver-kpi-card">
+        <div class="driver-kpi-card" style="cursor: pointer;" onclick="switchTab('available')" title="Click to view available orders to accept">
+          <div class="kpi-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <div>
+            <div class="kpi-title">Available To Accept</div>
+            <div class="kpi-val" style="color: #10B981;" id="kpi-available-count"><%= availableCount %></div>
+          </div>
+        </div>
+
+        <div class="driver-kpi-card" style="cursor: pointer;" onclick="switchTab('active')" title="Click to view your active deliveries">
           <div class="kpi-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B;">
             <i class="fa-solid fa-motorcycle"></i>
           </div>
           <div>
-            <div class="kpi-title">Active Orders</div>
+            <div class="kpi-title">Active Deliveries</div>
             <div class="kpi-val" id="kpi-active-count"><%= activeCount %></div>
           </div>
         </div>
@@ -574,16 +642,104 @@
 
       <!-- Tabs Navigation -->
       <div class="driver-tabs" role="tablist">
-        <button class="driver-tab-btn active" id="tab-active-btn" onclick="switchTab('active')">
+        <button class="driver-tab-btn <%= "available".equals(initialTab) ? "active" : "" %>" id="tab-available-btn" onclick="switchTab('available')">
+          <i class="fa-solid fa-bell"></i> Available Orders <span class="tab-counter available-pill"><%= availableCount %></span>
+        </button>
+        <button class="driver-tab-btn <%= "active".equals(initialTab) ? "active" : "" %>" id="tab-active-btn" onclick="switchTab('active')">
           <i class="fa-solid fa-motorcycle"></i> Active Deliveries <span class="tab-counter"><%= activeCount %></span>
         </button>
-        <button class="driver-tab-btn" id="tab-history-btn" onclick="switchTab('history')">
+        <button class="driver-tab-btn <%= "history".equals(initialTab) ? "active" : "" %>" id="tab-history-btn" onclick="switchTab('history')">
           <i class="fa-solid fa-box-archive"></i> Delivery History (<%= completedCount %>)
         </button>
       </div>
 
+      <!-- Section 0: Available Orders to Accept -->
+      <section id="section-available-orders" class="delivery-cards-grid" style="<%= "available".equals(initialTab) ? "display: grid;" : "display: none;" %>">
+        <% if (availableOrders == null || availableOrders.isEmpty()) { %>
+          <div class="empty-deliveries-card">
+            <div style="font-size: 40px; margin-bottom: 12px; color: #10B981;"><i class="fa-solid fa-satellite-dish"></i></div>
+            <h3 style="font-size: 18px; font-weight: 700; color: var(--color-text-primary); margin-bottom: 6px;">No Pending Orders Right Now</h3>
+            <p style="font-size: 14px; margin-bottom: 16px;">We're continuously scanning for incoming customer orders. Keep your duty status set to <strong>Available</strong>.</p>
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.reload();"><i class="fa-solid fa-arrows-rotate" style="margin-right: 6px;"></i>Refresh Live Feed</button>
+          </div>
+        <% } else { %>
+          <% for (Orders order : availableOrders) { 
+               Restaurant rest = (restaurantMap != null) ? restaurantMap.get(order.getRestaurantID()) : null;
+               User cust = (customerMap != null) ? customerMap.get(order.getUserID()) : null;
+               List<OrderItem> items = (orderItemsMap != null) ? orderItemsMap.get(order.getOrderID()) : null;
+               String oStatus = (order.getStatus() != null) ? order.getStatus().trim().toUpperCase() : "PLACED";
+          %>
+            <article class="delivery-card available-order">
+              <div>
+                <div class="delivery-card-header">
+                  <div>
+                    <div class="delivery-order-id">Order #<%= order.getOrderID() %></div>
+                    <div class="delivery-order-time"><i class="fa-regular fa-clock" style="margin-right: 4px;"></i><%= (order.getOrderDate() != null) ? sdf.format(order.getOrderDate()) : "Just now" %></div>
+                  </div>
+                  <span class="order-status-badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <span class="pulse-dot"></span>Ready To Accept
+                  </span>
+                </div>
+
+                <!-- Timeline: Pickup & Dropoff -->
+                <div class="route-timeline">
+                  <!-- Pickup Restaurant -->
+                  <div class="route-node">
+                    <div class="node-icon" style="color: #EF4444;"><i class="fa-solid fa-utensils"></i></div>
+                    <div class="node-details">
+                      <div class="node-type">Pick Up From</div>
+                      <div class="node-name"><%= (rest != null) ? rest.getName() : "Restaurant #" + order.getRestaurantID() %></div>
+                      <div class="node-address"><i class="fa-solid fa-location-dot" style="margin-right: 4px; color: var(--color-text-secondary);"></i><%= (rest != null && rest.getAddress() != null) ? rest.getAddress() : "Bengaluru" %></div>
+                    </div>
+                  </div>
+
+                  <!-- Drop-off Customer -->
+                  <div class="route-node">
+                    <div class="node-icon" style="color: #10B981;"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="node-details">
+                      <div class="node-type">Deliver To</div>
+                      <div class="node-name"><%= (cust != null) ? cust.getName() : "Customer #" + order.getUserID() %></div>
+                      <div class="node-address"><i class="fa-solid fa-house" style="margin-right: 4px; color: var(--color-text-secondary);"></i><%= (cust != null && cust.getAddress() != null) ? cust.getAddress() : "Bengaluru" %></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Order summary -->
+                <div class="delivery-items-summary">
+                  <div>
+                    <span style="font-weight: 700; color: var(--color-text-primary);">₹<%= df.format(order.getTotalAmount()) %></span>
+                    <span style="color: var(--color-text-secondary); font-size: 12px; margin-left: 6px;">
+                      (<%= (items != null) ? items.size() : 0 %> items)
+                    </span>
+                  </div>
+                  <div style="display: flex; gap: 6px; align-items: center;">
+                    <span class="payment-tag <%= "COD".equalsIgnoreCase(order.getPaymentMethod()) ? "tag-cod" : "tag-paid" %>">
+                      <%= "COD".equalsIgnoreCase(order.getPaymentMethod()) ? "<i class=\"fa-solid fa-money-bill-wave\" style=\"margin-right: 4px;\"></i>COD" : "<i class=\"fa-solid fa-credit-card\" style=\"margin-right: 4px;\"></i>Prepaid" %>
+                    </span>
+                    <span style="font-size: 11px; font-weight: 700; color: #10B981; background: rgba(16, 185, 129, 0.12); padding: 3px 8px; border-radius: var(--radius-sm);">
+                      +₹55.00 Earn
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action: Accept Order -->
+              <div class="delivery-actions-bar" style="margin-top: 14px;">
+                <form action="<%= request.getContextPath() %>/driver" method="POST" style="flex: 1; display: flex;">
+                  <input type="hidden" name="action" value="acceptOrder">
+                  <input type="hidden" name="orderID" value="<%= order.getOrderID() %>">
+                  <button type="submit" class="btn-action btn-accept" style="width: 100%;">
+                    <i class="fa-solid fa-hand-holding-hand" style="font-size: 16px;"></i> Accept Order (+₹55)
+                  </button>
+                </form>
+              </div>
+            </article>
+          <% } %>
+        <% } %>
+      </section>
+
       <!-- Section 1: Active Deliveries -->
-      <section id="section-active-deliveries" class="delivery-cards-grid">
+      <section id="section-active-deliveries" class="delivery-cards-grid" style="<%= "active".equals(initialTab) ? "display: grid;" : "display: none;" %>">
         <% if (activeDeliveries == null || activeDeliveries.isEmpty()) { %>
           <div class="empty-deliveries-card">
             <div style="font-size: 40px; margin-bottom: 12px; color: var(--color-primary);"><i class="fa-solid fa-champagne-glasses"></i></div>
@@ -676,8 +832,8 @@
         <% } %>
       </section>
 
-      <!-- Section 2: Delivery History (Hidden by default) -->
-      <section id="section-history-deliveries" class="delivery-cards-grid" style="display: none;">
+      <!-- Section 2: Delivery History -->
+      <section id="section-history-deliveries" class="delivery-cards-grid" style="<%= "history".equals(initialTab) ? "display: grid;" : "display: none;" %>">
         <% if (completedDeliveries == null || completedDeliveries.isEmpty()) { %>
           <div class="empty-deliveries-card">
             <div style="font-size: 40px; margin-bottom: 12px; color: var(--color-text-secondary);"><i class="fa-solid fa-box-open"></i></div>
@@ -737,23 +893,32 @@
   </div>
 
   <script>
-    // Tab Switching
+    // Tab Switching for Available, Active, and History
     function switchTab(tab) {
+      const availSec = document.getElementById('section-available-orders');
       const activeSec = document.getElementById('section-active-deliveries');
       const histSec = document.getElementById('section-history-deliveries');
+      const availBtn = document.getElementById('tab-available-btn');
       const activeBtn = document.getElementById('tab-active-btn');
       const histBtn = document.getElementById('tab-history-btn');
 
-      if (tab === 'active') {
-        activeSec.style.display = 'grid';
-        histSec.style.display = 'none';
-        activeBtn.classList.add('active');
-        histBtn.classList.remove('active');
-      } else {
-        activeSec.style.display = 'none';
-        histSec.style.display = 'grid';
-        activeBtn.classList.remove('active');
-        histBtn.classList.add('active');
+      if (availSec) availSec.style.display = 'none';
+      if (activeSec) activeSec.style.display = 'none';
+      if (histSec) histSec.style.display = 'none';
+
+      if (availBtn) availBtn.classList.remove('active');
+      if (activeBtn) activeBtn.classList.remove('active');
+      if (histBtn) histBtn.classList.remove('active');
+
+      if (tab === 'available') {
+        if (availSec) availSec.style.display = 'grid';
+        if (availBtn) availBtn.classList.add('active');
+      } else if (tab === 'active') {
+        if (activeSec) activeSec.style.display = 'grid';
+        if (activeBtn) activeBtn.classList.add('active');
+      } else if (tab === 'history') {
+        if (histSec) histSec.style.display = 'grid';
+        if (histBtn) histBtn.classList.add('active');
       }
     }
 
