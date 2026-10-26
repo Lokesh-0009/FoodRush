@@ -66,11 +66,19 @@ public class DBConnection {
 	}
 
 	public static Connection getConnection() {
+		if (url == null || url.contains("localhost")) {
+			loadConfiguration();
+		}
+
 		Connection connection = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(url, userName, password);
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException e) {
+			System.err.println("[DBConnection] FATAL: Driver ClassNotFoundException: " + e.getMessage());
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.err.println("[DBConnection] FATAL: Failed connecting to DB URL: [" + url + "] with user [" + userName + "]. Error: " + e.getMessage() + " (SQLState: " + e.getSQLState() + ")");
 			e.printStackTrace();
 		}
 		return connection;

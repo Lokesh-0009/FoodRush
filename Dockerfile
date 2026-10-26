@@ -19,7 +19,8 @@ COPY src/main/webapp/ webapps/ROOT/
 COPY src/main/resources/ /tmp/resources/
 RUN mkdir -p webapps/ROOT/WEB-INF/classes && \
     cp -r /tmp/resources/* webapps/ROOT/WEB-INF/classes/ 2>/dev/null || true && \
-    rm -rf /tmp/resources
+    rm -rf /tmp/resources && \
+    cp webapps/ROOT/WEB-INF/lib/*.jar /usr/local/tomcat/lib/ 2>/dev/null || true
 
 # Copy Java source code into temporary build directory
 COPY src/main/java/ /tmp/src/
