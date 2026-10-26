@@ -44,11 +44,18 @@ public class DBConnection {
 				if (props.getProperty("db.password") != null) {
 					password = props.getProperty("db.password").trim();
 				}
-			} else {
-				if (System.getenv("DB_URL") != null) url = System.getenv("DB_URL");
-				if (System.getenv("DB_USER") != null) userName = System.getenv("DB_USER");
-				if (System.getenv("DB_PASSWORD") != null) password = System.getenv("DB_PASSWORD");
 			}
+			// Environment variables take precedence (vital for Cloud/Render/Docker deployments)
+			if (System.getenv("DB_URL") != null && !System.getenv("DB_URL").trim().isEmpty()) {
+				url = System.getenv("DB_URL").trim();
+			}
+			if (System.getenv("DB_USER") != null && !System.getenv("DB_USER").trim().isEmpty()) {
+				userName = System.getenv("DB_USER").trim();
+			}
+			if (System.getenv("DB_PASSWORD") != null) {
+				password = System.getenv("DB_PASSWORD").trim();
+			}
+			System.out.println("[DBConnection] Initialized DB URL: " + url + " | User: " + userName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
